@@ -1,0 +1,77 @@
+import React from "react";
+
+const Footer = () => {
+  return (
+    <div className="bg-secondary py-12">
+      <div className="flex justify-around text-sm text-white mb-8">
+        <div className="max-w-xs ml-[-82px]">
+          <h1 className="text-xl font-bold font-nunito italic">
+            Find Your Peace,
+          </h1>
+          <h1 className="text-xl font-bold font-nunito italic mb-4">
+            Live Your Best Life
+          </h1>
+          <p>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Eos qui
+            itaque impedit? Lorem ipsum dolor sit amet consectetur adipisicing
+            elit.
+          </p>
+        </div>
+        <div className="font-nunito">
+          <h3 className="text-lg font-bold mb-4">Learn</h3>
+          <ul className="flex flex-col gap-1">
+            <li>
+              <a href="">Home</a>
+            </li>
+            <li>
+              <a href="">Daily Tips & Inspiration</a>
+            </li>
+            <li>
+              <a href="">Blog</a>
+            </li>
+            <li>
+              <a href="">Program</a>
+            </li>
+          </ul>
+        </div>
+        <div className="font-nunito">
+          <h3 className="text-lg font-bold mb-4">Help</h3>
+          <ol className="flex flex-col gap-1">
+            <li>
+              <a href="">FAQ</a>
+            </li>
+            <li>
+              <a href="">Contact Us</a>
+            </li>
+            <li>
+              <a href="">Terms</a>
+            </li>
+            <li>
+              <a href="">Privacy Policy</a>
+            </li>
+            <li>
+              <a href="">Security</a>
+            </li>
+            <li>
+              <a href="">Cookies</a>
+            </li>
+            <li>
+              <a href="">Accessibility Statement</a>
+            </li>
+          </ol>
+        </div>
+      </div>
+      <div className="border-t border-slate-400 my-[1px] mx-16"></div>
+      <div className="">
+        <div className="">
+
+        </div>
+        <div className="">
+            <p>c 2025 Moolen. All rights reserved</p>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default Footer;
