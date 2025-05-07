@@ -6,10 +6,18 @@ const Homepage = () => {
   return (
     <div className="">
       {/* Landing Page 1 */}
-      <div className="flex w-full px-16 bg-gradient-to-b from-primary to-[#fff] pb-12">
-        <div className="flex-[3] flex flex-col justify-center gap-10">
-          <h1 className="xl:text-5xl font-bold font-nunito max-w-2xl">
-            Understand Your Emotions, Embrace Your Journey
+      <div className="flex w-full px-28 bg-gradient-to-b from-primary to-[#fff] mt-24">
+        <div className="w-2/3 flex flex-col justify-center gap-10 -mr-24">
+          <h1 className="xl:text-5xl font-bold font-nunito max-w-4xl">
+            Understand Your Emotions, Embrace Your{" "}
+            <span className="relative inline-block min-w-[16rem] min-h-[4rem]">
+              Journey
+              <img
+                src="/circle.png"
+                alt="Circle decoration"
+                className="absolute -top-5 -left-6 w-56 rounded-full"
+              />
+            </span>
           </h1>
           <p className="text-md font-nunito max-w-xl italic">
             “Discover your mood, express your feelings, and grow every day with
@@ -22,14 +30,14 @@ const Homepage = () => {
             </button>
           </div>
         </div>
-        <div className="flex-[2] w-full flex overflow-visible">
-          <img src="/battery.png" alt="..." className="xl:w-[883px]" />
+        <div className="relative flex justify-end overflow-visible flex-grow">
+          <img src="/battery.png" alt="..." className="xl:w-[840px]" />
         </div>
       </div>
 
       {/* Landing page 2 & 3 */}
 
-      <div className="px-8 bg-gradient-to-b from-[#fff] to-primary py-24">
+      <div className="px-8 bg-gradient-to-b from-[#fff] to-primary pt-12 pb-24">
         {/* Landing page 2 */}
         <h2 className="mb-8 font-bold font-nunito text-xl lg:text-3xl text-center">
           How Can Moolen Help You Feel Better Today
@@ -106,7 +114,7 @@ const Homepage = () => {
             <p className="text-md">Insights on Mental Wellness</p>
             <h1 className="text-3xl font-bold">What People Are Saying</h1>
           </div>
-          <img src="/wave.png" alt="" className="w-28"  />
+          <img src="/wave.png" alt="" className="w-28" />
         </div>
 
         <div className="flex gap-15 overflow-auto pb-12 mb-10">
@@ -117,12 +125,13 @@ const Homepage = () => {
           <Review />
         </div>
         <div className="flex justify-center items-center">
-          <button className="px-36 py-4 bg-[#1C2444] text-white font-bold text-lg shadow-lg rounded-full">Tell Your Opinion Here</button>
+          <button className="px-36 py-4 bg-[#1C2444] text-white font-bold text-lg shadow-lg rounded-full">
+            Tell Your Opinion Here
+          </button>
         </div>
       </div>
 
       <Footer />
-      
     </div>
   );
 };
