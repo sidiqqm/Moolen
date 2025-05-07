@@ -1,4 +1,11 @@
 import React from "react";
+import {
+  InstagramLogo,
+  FacebookLogo,
+  LinkedinLogo,
+  XLogo,
+  YoutubeLogo,
+} from "@phosphor-icons/react";
 
 const Footer = () => {
   return (
@@ -61,13 +68,20 @@ const Footer = () => {
           </ol>
         </div>
       </div>
-      <div className="border-t border-slate-400 my-[1px] mx-16"></div>
-      <div className="">
-        <div className="">
+      <div className="border-t border-slate-400 my-[1px] mx-20 mb-6"></div>
 
+      <div className="flex justify-around gap-96">
+        <div className="flex gap-4 mr-72">
+          <InstagramLogo color="#fff" weight="fill" size={28} />
+          <FacebookLogo color="#fff" weight="fill" size={28} />
+          <LinkedinLogo color="#fff" weight="fill" size={28} />
+          <XLogo color="#fff" weight="fill" size={28} />
+          <YoutubeLogo color="#fff" weight="fill" size={28} />
         </div>
         <div className="">
-            <p>c 2025 Moolen. All rights reserved</p>
+          <p className="text-[17px] font-semibold text-white">
+            c 2025 Moolen. All rights reserved
+          </p>
         </div>
       </div>
     </div>
