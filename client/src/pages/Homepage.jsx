@@ -6,7 +6,7 @@ const Homepage = () => {
   return (
     <div className="">
       {/* Landing Page 1 */}
-      <div className="flex w-full px-28 bg-gradient-to-b from-primary to-[#fff] mt-24">
+      <div className="flex w-full px-28 bg-gradient-to-b from-primary to-[#fff] pt-18">
         <div className="w-2/3 flex flex-col justify-center gap-10 -mr-24">
           <h1 className="xl:text-5xl font-bold font-nunito max-w-4xl">
             Understand Your Emotions, Embrace Your{" "}

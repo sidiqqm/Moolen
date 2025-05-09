@@ -2,9 +2,9 @@ import React from "react";
 
 function TrackingMoodPage() {
   return (
-    <div className="w-full h-screen font-nunito flex overflow-hidden">
+    <div className="w-full h-screen font-nunito flex overflow-hidden pt-8">
       <div className="w-1/2 flex flex-col justify-center items-center -ml-8 gap-48">
-        <div className="flex flex-col items-center">
+        <div className="flex flex-col justify-center items-center">
           <h1 className="text-5xl font-bold">Hello Mehbub!</h1>
           <img src="/pink.png" alt=""/>
           <h3 className="text-3xl font-semibold">How are you feeling today?</h3>
@@ -30,7 +30,7 @@ function TrackingMoodPage() {
         <img
           src="/cream.png"
           alt=""
-          className="w-[180px] absolute bottom-10 -right-18 z-20"
+          className="w-[160px] absolute bottom-10 -right-18 z-20"
         />
       </div>
     </div>
