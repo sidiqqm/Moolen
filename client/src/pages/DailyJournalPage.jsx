@@ -2,10 +2,11 @@ import { Link } from "react-router-dom";
 import Calendar from "../components/Calendar";
 import JournalEntries from "../components/JournalEntries";
 import MarqueeText from "../components/MarqueeText";
+import Footer from "../components/Footer";
 
 function DailyJournalPage() {
   return (
-    <div className="min-h-screen flex flex-col bg-gradient-to-b from-sky-50 to-sky-100 pt-18 font-nunito">
+    <div className="min-h-screen flex flex-col bg-gradient-to-b from-[#AADAFB] to-[#fff] pt-18 font-nunito">
       {/* Hero Section */}
       <section className="container mx-auto px-4 py-16 text-center">
         <h1 className="text-5xl font-bold mb-12 relative">
@@ -73,6 +74,17 @@ function DailyJournalPage() {
         <Calendar />
         <JournalEntries />
       </section>
+
+      {/* Pelangi bergelombang */}
+      <div className="relative w-full overflow-hidden mt-16">
+        <img
+          src="/pelangi.png"
+          alt="Pelangi"
+          className="relative z-10 mx-auto w-[840px] -mb-20"
+        />
+      </div>
+
+      <Footer />
     </div>
   );
 }
