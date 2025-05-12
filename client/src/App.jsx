@@ -7,6 +7,7 @@ import MoodCheckPage from "./pages/MoodCheckPage";
 import TrackingMoodPage from "./pages/TrackingMoodPage";
 import MoodPhotoPage from "./pages/MoodPhotoPage";
 import MoodPhotoResultPage from "./pages/MoodPhotoResultPage";
+import DailyJournalPage from "./pages/DailyJournalPage";
 
 function App() {
   const router = createBrowserRouter([
@@ -41,6 +42,10 @@ function App() {
         {
           path: "/track-mood/mood-photo/result",
           element: <MoodPhotoResultPage/>,
+        },
+        {
+          path: "/journal",
+          element: <DailyJournalPage/>,
         },
       ],
     },
