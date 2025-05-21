@@ -1,6 +1,7 @@
 import { ChevronRightIcon } from "@heroicons/react/24/solid";
 import Review from "../components/Review";
 import Footer from "../components/Footer";
+import { Link } from "react-router-dom";
 
 const Homepage = () => {
   return (
@@ -43,35 +44,46 @@ const Homepage = () => {
           How Can Moolen Help You Feel Better Today
         </h2>
         <div className="lg:px-48 grid grid-cols-1 md:grid-cols-2 gap-8 justify-items-center">
-          <div className="bg-transparent border-2 border-slate-400 w-full px-8 max-w-[400px] h-[80px] flex items-center justify-between rounded-lg">
+        <Link to="/track-mood/mood-photo" className="w-full max-w-[400px]">
+          <div className="bg-transparent border-2 border-slate-400 w-full px-8 h-[80px] flex items-center justify-between rounded-lg hover:bg-slate-100 cursor-pointer transition">
             <p className="font-nunito text-lg">Mood Check-In</p>
             <div className="flex gap-4 items-center">
               <img src="/letter.png" alt="" className="size-9" />
               <ChevronRightIcon className="size-7" />
             </div>
           </div>
-          <div className="bg-transparent border-2 border-slate-400 w-full px-8 max-w-[400px] h-[80px] flex items-center justify-between rounded-lg">
+        </Link>
+
+        <Link to="/journal" className="w-full max-w-[400px]">
+          <div className="bg-transparent border-2 border-slate-400 w-full px-8 h-[80px] flex items-center justify-between rounded-lg hover:bg-slate-100 cursor-pointer transition">
             <p className="font-nunito text-lg">Daily Journal</p>
             <div className="flex gap-4 items-center">
               <img src="/book.png" alt="" className="size-9" />
               <ChevronRightIcon className="size-7" />
             </div>
           </div>
-          <div className="bg-transparent border-2 border-slate-400 w-full px-8 max-w-[400px] h-[80px] flex items-center justify-between rounded-lg">
+        </Link>
+
+        <Link to="#" className="w-full max-w-[400px]">
+          <div className="bg-transparent border-2 border-slate-400 w-full px-8 h-[80px] flex items-center justify-between rounded-lg hover:bg-slate-100 cursor-pointer transition">
             <p className="font-nunito text-lg">Self Assessment</p>
             <div className="flex gap-4 items-center">
               <img src="/task.png" alt="" className="size-9" />
               <ChevronRightIcon className="size-7" />
             </div>
           </div>
-          <div className="bg-transparent border-2 border-slate-400 w-full px-8 max-w-[400px] h-[80px] flex items-center justify-between rounded-lg">
+        </Link>
+
+        <Link to="/article" className="w-full max-w-[400px]">
+          <div className="bg-transparent border-2 border-slate-400 w-full px-8 h-[80px] flex items-center justify-between rounded-lg hover:bg-slate-100 cursor-pointer transition">
             <p className="font-nunito text-lg">Daily Tips & Inspiration</p>
             <div className="flex gap-4 items-center">
               <img src="/lamp.png" alt="" className="size-9" />
               <ChevronRightIcon className="size-7" />
             </div>
           </div>
-        </div>
+        </Link>
+      </div>
 
         {/* Landing Page 3 */}
 
@@ -86,7 +98,8 @@ const Homepage = () => {
           </div>
 
           {/* Container Kanan yang sedikit menabrak kiri */}
-          <div className="w-1/2 -ml-20 z-10 p-6 flex flex-col items-center justify-center mt-20 font-nunito">
+          <div  id="about"
+            className="w-1/2 -ml-20 z-10 p-6 flex flex-col items-center justify-center mt-20 font-nunito">
             <h1 className="text-4xl max-w-xl font-bold mb-6 text-center">
               A Gentle Companion for Your Emotional Journey
             </h1>

@@ -27,7 +27,7 @@ function DailyJournalPage() {
       <MarqueeText />
 
       {/* Diary Section */}
-      <section className="container mx-auto px-4 py-8">
+      <section className="container mx-auto px-4 py-45">
         <div className="text-center mb-8 relative">
           <span className="relative inline-block min-w-[16rem] min-h-[4rem] font-bold font-nunito text-4xl">
             Your Diary
@@ -46,7 +46,7 @@ function DailyJournalPage() {
           </div>
         </div>
 
-        <div className="flex justify-between items-center mb-6">
+        <div className="flex justify-between items-center mb-10">
           <button className="bg-white text-gray-800 px-4 py-1 rounded-full border border-gray-200 text-sm">
             This Month
           </button>
