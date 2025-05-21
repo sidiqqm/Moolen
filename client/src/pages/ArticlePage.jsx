@@ -17,24 +17,27 @@ function ArticlePage() {
     <main className="min-h-screen bg-sky-100 pt-18">
 
       {/* Hero Section */}
-      <section className="container mx-auto px-4 py-12 flex flex-col items-center text-center">
-        <div className="w-48 h-48 relative mb-6">
-          <img
-            src={"/flower.png" || "/placeholder.svg"}
-            alt="Brain and Flower Logo"
-            className="object-contain w-full h-full"
-          />
+      <section
+        className="min-h-screen bg-cover bg-center flex items-center px-85"
+        style={{ backgroundImage: "url('/hs_article.png')" }}
+      >
+        <div className="ml-auto max-w-4xl text-white">
+          <h1 className="text-5xl md:text-6xl font-bold mb-6 leading-tight">
+            Mental health is messy.<br />
+            Your support shouldn’t be.
+          </h1>
+          <p className="text-lg md:text-xl">
+            MooLens turns psychological research into practical tools for real life.<br />
+            Because feeling better is possible, even on hard days.
+          </p>
         </div>
-        <h1 className="text-3xl font-bold mb-2">Daily Tips & Inspiration</h1>
-        <p className="text-gray-600 max-w-md">
-          "Small reminders to help you through the day"
-        </p>
       </section>
 
+
       {/* Library Section */}
-      <section className="container mx-auto px-4 py-12">
+      <section className="container mx-auto px-4 py-25">
         <div className="flex flex-col items-center mb-10">
-          <h2 className="text-2xl font-bold mb-1">Explore Our Library</h2>
+          <h2 className="text-4xl font-bold mb-1">Daily Tips & Inspirations</h2>
           <div className="relative">
             <img
               src={"/redline.png" || "/placeholder.svg"}
@@ -50,38 +53,95 @@ function ArticlePage() {
           className="mb-8 flex justify-center"
           onValueChange={setActiveTab}
         >
-          <TabsList className="grid grid-cols-4 gap-2">
-            <TabsTrigger
-              value="all"
-              className="bg-gray-800 text-white data-[state=active]:bg-gray-900"
-            >
-              All Categories
-            </TabsTrigger>
+          <TabsList className="flex gap-8 bg-transparent shadow-none">
+
             <TabsTrigger
               value="meditation"
-              className="bg-amber-500 text-white data-[state=active]:bg-amber-600"
+              className={`group inline-flex items-center gap-2 rounded-full px-5 py-2 transition-colors duration-300 ${
+                activeTab === "meditation"
+                  ? "bg-black text-white"
+                  : "bg-[#fef6f6] text-black hover:bg-black hover:text-white"
+              }`}
             >
+              <img
+                src={
+                  activeTab === "meditation"
+                    ? "/mindfullness-wt.png"
+                    : "/mindfullness.png"
+                }
+                alt="Mindfulness"
+                className="w-5 h-5 transition-all duration-300"
+              />
               Meditation
             </TabsTrigger>
+
             <TabsTrigger
-              value="self-care"
-              className="bg-rose-500 text-white data-[state=active]:bg-rose-600"
+              value="motivation"
+              className={`group inline-flex items-center gap-2 rounded-full px-5 py-2 transition-colors duration-300 ${
+                activeTab === "motivation"
+                  ? "bg-black text-white"
+                  : "bg-[#fef6f6] text-black hover:bg-black hover:text-white"
+              }`}
             >
+              <img
+                src={
+                  activeTab === "motivation"
+                    ? "/motivation-wt.png"
+                    : "/motivation.png"
+                }
+                alt="Motivation"
+                className="w-5 h-5 transition-all duration-300"
+              />
+              Motivation
+            </TabsTrigger>
+
+                <TabsTrigger
+              value="self-care"
+              className={`group inline-flex items-center gap-2 rounded-full px-5 py-2 transition-colors duration-300 ${
+                activeTab === "self-care"
+                  ? "bg-black text-white"
+                  : "bg-[#fef6f6] text-black hover:bg-black hover:text-white"
+              }`}
+            >
+              <img
+                src={
+                  activeTab === "self-care"
+                    ? "/selfcare-wt.png"
+                    : "/selfcare.png"
+                }
+                alt="Self Care"
+                className="w-5 h-5 transition-all duration-300"
+              />
               Self Care
             </TabsTrigger>
+
             <TabsTrigger
               value="emotional"
-              className="bg-orange-500 text-white data-[state=active]:bg-orange-600"
+              className={`group inline-flex items-center gap-2 rounded-full px-5 py-2 transition-colors duration-300 ${
+                activeTab === "emotional"
+                  ? "bg-black text-white"
+                  : "bg-[#fef6f6] text-black hover:bg-black hover:text-white"
+              }`}
             >
+              <img
+                src={
+                  activeTab === "emotional"
+                    ? "/emotional-wt.png"
+                    : "/emotional.png"
+                }
+                alt="Emotional"
+                className="w-5 h-5 transition-all duration-300"
+              />
               Emotional Support
             </TabsTrigger>
+
           </TabsList>
         </Tabs>
 
         {/* Article Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-10">
           {filteredArticles.map((article, index) => (
-            <Card key={index} className="overflow-hidden group relative h-72">
+            <Card key={index} className="overflow-hidden group relative h-72 transform transition duration-500 hover:scale-105 hover:shadow-xl cursor-pointer">
               <div className="absolute inset-0">
                 <img
                   src={article.image || "/placeholder.svg"}
@@ -185,6 +245,20 @@ const articles = [
     image:
       "https://images.unsplash.com/photo-1507652313519-d4e9174996dd?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8Y2xlYXIlMjBtaW5kfGVufDB8fDB8fHww&auto=format&fit=crop&w=600&q=60",
     category: "self-care",
+  },
+  {
+    title: "Building Emotional Resilience",
+    excerpt: "Strengthen your ability to handle life's challenges",
+    image:
+      "https://images.unsplash.com/photo-1518609878373-06d740f60d8b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8c3RyZW5ndGh8ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&w=600&q=60",
+    category: "motivation",
+  },
+  {
+    title: "Self-Care Rituals for Mental Clarity",
+    excerpt: "Simple practices to clear your mind",
+    image:
+      "https://images.unsplash.com/photo-1507652313519-d4e9174996dd?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8Y2xlYXIlMjBtaW5kfGVufDB8fDB8fHww&auto=format&fit=crop&w=600&q=60",
+    category: "motivation",
   },
 ];
 
