@@ -3,7 +3,6 @@ import Layout from "./components/Layout";
 import Homepage from "./pages/Homepage";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
-import MoodCheckPage from "./pages/MoodCheckPage";
 import TrackingMoodPage from "./pages/TrackingMoodPage";
 import MoodPhotoPage from "./pages/MoodPhotoPage";
 import MoodPhotoResultPage from "./pages/MoodPhotoResultPage";
@@ -27,10 +26,6 @@ function App() {
         {
           path: "/register",
           element: <RegisterPage />,
-        },
-        {
-          path: "/moodcheck",
-          element: <MoodCheckPage />,
         },
         {
           path: "/track-mood",

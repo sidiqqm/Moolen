@@ -18,7 +18,7 @@ function Layout() {
   }, [location]);
 
   return (
-    <div className="layout">
+    <div>
       <div>
         <Navbar />
       </div>
