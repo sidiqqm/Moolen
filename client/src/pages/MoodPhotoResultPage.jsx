@@ -25,7 +25,7 @@ const MoodPhotoResultPage = () => {
       <img
         src="/yellow.png"
         alt=""
-        className="absolute -right-1/6 -top-1/5 md:-right-1/6 md:-top-1/12  lg:-top-32 lg:left-56 w-[320px]"
+        className="absolute -right-1/6 -top-1/5 md:-right-1/6 md:-top-1/12 lg:-top-32 lg:left-56 w-[320px]"
       />
       <img
         src="/cream.png"
