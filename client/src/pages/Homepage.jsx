@@ -7,43 +7,45 @@ const Homepage = () => {
   return (
     <div className="">
       {/* Landing Page 1 */}
-      <div className="flex w-full px-28 bg-gradient-to-b from-primary to-[#fff] pt-18">
+      <div className="flex w-full px-35 bg-gradient-to-b from-primary to-[#fff] pt-18">
         <div className="w-2/3 flex flex-col justify-center gap-10 -mr-24">
-          <h1 className="xl:text-5xl font-bold font-nunito max-w-4xl">
+          <h1 className="xl:text-6xl text-4xl font-bold font-nunito max-w-4xl leading-tight relative z-10">
             Understand Your Emotions, Embrace Your{" "}
             <span className="relative inline-block min-w-[16rem] min-h-[4rem]">
               Journey
               <img
                 src="/circle.png"
                 alt="Circle decoration"
-                className="absolute -top-5 -left-6 w-56 rounded-full"
+                className="absolute -top-3 -left-2 w-56 rounded-full z-0"
               />
             </span>
           </h1>
-          <p className="text-md font-nunito max-w-xl italic">
-            “Discover your mood, express your feelings, and grow every day with
-            MooLen, a gentle space where your emotions are seen, heard, and
-            nurtured.”
+          <p className="text-lg font-nunito max-w-xl italic leading-relaxed">
+            “Discover your mood, express your feelings, and grow every day with MooLen,
+            a gentle space where your emotions are seen, heard, and nurtured.”
           </p>
+
           <div className="">
-            <button className="bg-secondary text-white text-sm font-bold font-nunito px-10 py-4 rounded-3xl">
+          <Link to="/track-mood/mood-photo">
+            <button className="bg-[#1C2444] text-white text-sm font-bold font-nunito px-10 py-4 rounded-3xl transition-colors duration-300 ease-in-out hover:opacity-90 transition">
               Track Your Mood
             </button>
+          </Link>
           </div>
         </div>
         <div className="relative flex justify-end overflow-visible flex-grow">
-          <img src="/battery.png" alt="..." className="xl:w-[840px]" />
+          <img src="/battery.png" alt="..." className="xl:w-[1500px]" />
         </div>
       </div>
 
       {/* Landing page 2 & 3 */}
 
-      <div className="px-8 bg-gradient-to-b from-[#fff] to-primary pt-12 pb-24">
+      <div className="grid px-8 bg-gradient-to-b from-[#fff] to-primary pt-55 pb-24">
         {/* Landing page 2 */}
         <h2 className="mb-8 font-bold font-nunito text-xl lg:text-3xl text-center">
           How Can Moolen Help You Feel Better Today
         </h2>
-        <div className="lg:px-48 grid grid-cols-1 md:grid-cols-2 gap-8 justify-items-center">
+        <div className="lg:px-48 grid grid-cols-1 md:grid-cols-2 gap-8 justify-items-center pt-10">
         <Link to="/track-mood/mood-photo" className="w-full max-w-[400px]">
           <div className="bg-transparent border-2 border-slate-400 w-full px-8 h-[80px] flex items-center justify-between rounded-lg hover:bg-slate-100 cursor-pointer transition">
             <p className="font-nunito text-lg">Mood Check-In</p>
@@ -87,7 +89,7 @@ const Homepage = () => {
 
         {/* Landing Page 3 */}
 
-        <div className="mt-24 flex items-center">
+        <div className="mt-100 mb-64 flex items-center">
           {/* Container Kiri */}
           <div className="w-1/2 flex justify-end pr-10">
             <img

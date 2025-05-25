@@ -16,7 +16,7 @@ const Navbar = () => {
         <Link to="/article" className="hover:text-blue-600 transition">
           Daily Tips
         </Link>
-        <a href="#" className="hover:text-blue-600 transition">
+        <a href="/developer" className="hover:text-blue-600 transition">
           Developers
         </a>
         <Link
