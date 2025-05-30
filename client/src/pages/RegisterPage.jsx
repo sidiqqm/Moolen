@@ -1,24 +1,57 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { registerUser } from '../lib/auth';
+import { useGoogleLogin } from '@react-oauth/google';
+import { FcGoogle } from 'react-icons/fc';
 
 const RegisterPage = () => {
+  const [firstName, setFirstName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const navigate = useNavigate();
+
+  const loginWithGoogle = useGoogleLogin({
+    onSuccess: (credentialResponse) => {
+      console.log('Google credential token:', credentialResponse.credential);
+      localStorage.setItem('googleToken', credentialResponse.credential);
+      alert('Login dengan Google berhasil!');
+      navigate('/');
+    },
+    onError: () => {
+      alert('Login Google gagal. Silakan coba lagi.');
+    },
+  });
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const result = registerUser(email, password);
+    alert(result.message);
+    if (result.success) {
+      navigate('/login');
+    }
+  };
+
   return (
     <div className="min-h-screen flex items-center justify-center">
       <div className="bg-white p-8 rounded-2xl shadow-lg w-full max-w-md">
         <h2 className="text-2xl font-bold text-center mb-6">Create your account</h2>
 
-        <form className="space-y-4">
+        <form className="space-y-4" onSubmit={handleSubmit}>
           <input
             type="text"
             placeholder="First Name (Required)"
             required
             className="w-full p-3 border rounded-md"
+            value={firstName}
+            onChange={(e) => setFirstName(e.target.value)}
           />
           <input
             type="email"
             placeholder="Email Address (Required)"
             required
             className="w-full p-3 border rounded-md"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
           />
           <input
             type="password"
@@ -26,6 +59,8 @@ const RegisterPage = () => {
             required
             minLength={8}
             className="w-full p-3 border rounded-md"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
           />
 
           <div className="text-right text-sm">
@@ -47,8 +82,11 @@ const RegisterPage = () => {
         </div>
 
         <div className="space-y-3">
-          <button className="w-full flex items-center justify-center gap-2 border rounded-full py-3 shadow-sm bg-white hover:bg-gray-100 transition">
-            <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google" className="w-5 h-5" />
+          <button
+            onClick={() => loginWithGoogle()}
+            className="w-full flex items-center justify-center gap-2 border rounded-full py-3 shadow-sm bg-white hover:bg-gray-100 transition"
+          >
+            <FcGoogle className="w-5 h-5" />
             <span className="font-medium">Continue with Google</span>
           </button>
 
@@ -65,10 +103,10 @@ const RegisterPage = () => {
         </p>
 
         <p className="text-sm text-center mt-4">
-        Already have an account?{' '}
-        <Link to="/login" className="underline font-medium">
-          Sign in
-        </Link>
+          Already have an account?{' '}
+          <Link to="/login" className="underline font-medium">
+            Sign in
+          </Link>
         </p>
       </div>
     </div>

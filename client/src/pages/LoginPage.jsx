@@ -1,7 +1,34 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { loginUser } from '../lib/auth';
+import { useGoogleLogin } from '@react-oauth/google';
 
 const LoginPage = () => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const navigate = useNavigate();
+
+  const loginWithGoogle = useGoogleLogin({
+    onSuccess: (credentialResponse) => {
+      console.log('Google credential token:', credentialResponse.credential);
+      localStorage.setItem('googleToken', credentialResponse.credential);
+      alert('Login dengan Google berhasil!');
+      navigate('/');
+    },
+    onError: () => {
+      alert('Login Google gagal. Silakan coba lagi.');
+    },
+  });
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const result = loginUser(email, password);
+    alert(result.message);
+    if (result.success) {
+      navigate('/');
+    }
+  };
+  
   return (
     <div className="min-h-screen flex items-center justify-center">
       <div className="bg-white p-8 rounded-2xl shadow-lg w-full max-w-md">
@@ -41,10 +68,14 @@ const LoginPage = () => {
         </div>
 
         <div className="space-y-3">
-          <button className="w-full flex items-center justify-center gap-2 border rounded-full py-3 shadow-sm bg-white hover:bg-gray-100 transition">
+          <button
+            onClick={() => loginWithGoogle()}
+            className="w-full flex items-center justify-center gap-2 border rounded-full py-3 shadow-sm bg-white hover:bg-gray-100 transition"
+          >
             <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google" className="w-5 h-5" />
             <span className="font-medium">Continue with Google</span>
           </button>
+
 
           <button className="w-full flex items-center justify-center gap-2 bg-black text-white rounded-full py-3 shadow-md hover:opacity-90 transition">
             <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
