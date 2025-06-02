@@ -2,15 +2,15 @@ import React from "react";
 
 const MoodPhotoPage = () => {
   return (
-    <div className="w-full h-full font-nunito mt-8 relative">
-      <div className="flex flex-col justify-center items-center gap-4 pt-20">
+    <div className="w-screen h-screen overflow-hidden font-nunito relative">
+      <div className="flex flex-col justify-center items-center gap-4 pt-12 h-full">
         {/* Header */}
         <div className="z-10">
           <h1 className="text-4xl font-bold -mb-2">Hello, Mehbub!</h1>
           <img src="/pink.png" alt="" className="w-72" />
         </div>
 
-        {/* Canvas Camera (di tengah) */}
+        {/* Canvas Camera */}
         <div className="w-full flex justify-center items-center z-10">
           <canvas
             id="camera-canvas"
@@ -30,7 +30,7 @@ const MoodPhotoPage = () => {
       <img
         src="/yellow.png"
         alt=""
-        className="absolute -right-1/6 -top-1/5 md:-right-1/6 md:-top-1/12  lg:-top-32 lg:left-56 w-[320px]"
+        className="absolute -right-1/6 -top-1/5 md:-right-1/6 md:-top-1/12 lg:-top-32 lg:left-56 w-[320px]"
       />
       <img
         src="/cream.png"
