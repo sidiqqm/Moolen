@@ -4,7 +4,6 @@ import { Card } from "../components/ui/Card";
 import { Tabs, TabsList, TabsTrigger } from "../components/ui/Tabs";
 import Footer from "../components/Footer";
 
-
 function ArticlePage() {
   const [activeTab, setActiveTab] = useState("all");
 
@@ -14,25 +13,28 @@ function ArticlePage() {
       : articles.filter((article) => article.category === activeTab);
 
   return (
-    <main className="min-h-screen bg-sky-100 pt-18">
-
+    <main className="min-h-screen bg-sky-100">
       {/* Hero Section */}
-      <section
-        className="min-h-screen bg-cover bg-center flex items-center px-85"
-        style={{ backgroundImage: "url('/hs_article.png')" }}
-      >
-        <div className="ml-auto max-w-4xl text-white">
-          <h1 className="text-5xl md:text-6xl font-bold mb-6 leading-tight">
-            Mental health is messy.<br />
-            Your support shouldn’t be.
-          </h1>
-          <p className="text-lg md:text-xl">
-            MooLens turns psychological research into practical tools for real life.<br />
-            Because feeling better is possible, even on hard days.
-          </p>
-        </div>
-      </section>
-
+      <div className="pt-8 bg-[#1a86a1]">
+        <section
+          className="min-h-screen bg-cover bg-center flex items-center justify-end px-10 md:px-20"
+          style={{ backgroundImage: "url('/hs_article.png')" }}
+        >
+          <div className="max-w-4xl text-white text-right">
+            <h1 className="text-5xl md:text-6xl font-bold mb-6 leading-tight">
+              Mental health is messy.
+              <br />
+              Your support shouldn’t be.
+            </h1>
+            <p className="text-lg md:text-xl">
+              MooLens turns psychological research into practical tools for real
+              life.
+              <br />
+              Because feeling better is possible, even on hard days.
+            </p>
+          </div>
+        </section>
+      </div>
 
       {/* Library Section */}
       <section className="container mx-auto px-4 py-25">
@@ -54,7 +56,6 @@ function ArticlePage() {
           onValueChange={setActiveTab}
         >
           <TabsList className="flex gap-8 bg-transparent shadow-none">
-
             <TabsTrigger
               value="meditation"
               className={`group inline-flex items-center gap-2 rounded-full px-5 py-2 transition-colors duration-300 ${
@@ -95,7 +96,7 @@ function ArticlePage() {
               Motivation
             </TabsTrigger>
 
-                <TabsTrigger
+            <TabsTrigger
               value="self-care"
               className={`group inline-flex items-center gap-2 rounded-full px-5 py-2 transition-colors duration-300 ${
                 activeTab === "self-care"
@@ -134,14 +135,16 @@ function ArticlePage() {
               />
               Emotional Support
             </TabsTrigger>
-
           </TabsList>
         </Tabs>
 
         {/* Article Cards */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-10">
           {filteredArticles.map((article, index) => (
-            <Card key={index} className="overflow-hidden group relative h-72 transform transition duration-500 hover:scale-105 hover:shadow-xl cursor-pointer">
+            <Card
+              key={index}
+              className="overflow-hidden group relative h-72 transform transition duration-500 hover:scale-105 hover:shadow-xl cursor-pointer"
+            >
               <div className="absolute inset-0">
                 <img
                   src={article.image || "/placeholder.svg"}

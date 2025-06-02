@@ -30,14 +30,10 @@ import DeveloperPage from "./pages/developersPage";
         },
         {
           path: "/track-mood",
-          element: <TrackingMoodPage/>,
-        },
-        {
-          path: "/track-mood/mood-photo",
           element: <MoodPhotoPage/>,
         },
         {
-          path: "/track-mood/mood-photo/result",
+          path: "/track-mood/result",
           element: <MoodPhotoResultPage/>,
         },
         {
