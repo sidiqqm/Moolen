@@ -1,0 +1,4 @@
+node_modules/
+.env
+*.log
+moolen-26aa2-firebase-adminsdk-fbsvc-f2ddba54ee.json
