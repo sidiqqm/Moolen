@@ -10,6 +10,7 @@ import MoodPhotoResultPage from "./pages/MoodPhotoResultPage";
 import DailyJournalPage from "./pages/DailyJournalPage";
 import ArticlePage from "./pages/ArticlePage";
 import DeveloperPage from "./pages/developersPage";
+import ProfilePage from "./pages/ProfilePage";
 
   const router = createBrowserRouter([
     {
@@ -47,6 +48,10 @@ import DeveloperPage from "./pages/developersPage";
         {
           path: "/developer",
           element: <DeveloperPage/>,
+        },
+        {
+          path: "/profile",
+          element: <ProfilePage/>,
         },
       ],
     },
