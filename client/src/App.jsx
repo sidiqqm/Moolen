@@ -11,6 +11,7 @@ import DailyJournalPage from "./pages/DailyJournalPage";
 import ArticlePage from "./pages/ArticlePage";
 import DeveloperPage from "./pages/developersPage";
 import { SelfAssessment, AssessmentStart, AssessmentForm, SummaryForm } from "./pages/Self-assessmentPage";
+import ProfilePage from "./pages/ProfilePage";
 
   const router = createBrowserRouter([
     {
@@ -64,6 +65,10 @@ import { SelfAssessment, AssessmentStart, AssessmentForm, SummaryForm } from "./
         {
           path: "/developer",
           element: <DeveloperPage/>,
+        },
+        {
+          path: "/profile",
+          element: <ProfilePage/>,
         },
       ],
     },
