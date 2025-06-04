@@ -42,9 +42,9 @@ const Homepage = () => {
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 lg:px-24 justify-items-center">
           {[
-            { path: "/track-mood/mood-photo", title: "Mood Check-In", icon: "letter.png" },
+            { path: "/track-mood", title: "Mood Check-In", icon: "letter.png" },
             { path: "/journal", title: "Daily Journal", icon: "book.png" },
-            { path: "#", title: "Self Assessment", icon: "task.png" },
+            { path: "/self-assesment", title: "Self Assessment", icon: "task.png" },
             { path: "/article", title: "Daily Tips & Inspiration", icon: "lamp.png" },
           ].map((item, idx) => (
             <Link key={idx} to={item.path} className="w-full max-w-[400px]">
