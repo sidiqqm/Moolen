@@ -42,6 +42,7 @@ function ArticlePage() {
           <h2 className="text-4xl font-bold mb-1">Daily Tips & Inspirations</h2>
           <div className="relative">
             <img
+              // eslint-disable-next-line no-constant-binary-expression
               src={"/redline.png" || "/placeholder.svg"}
               alt="Decorative underline"
               className="object-contain w-48 h-5"

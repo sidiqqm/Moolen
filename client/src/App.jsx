@@ -10,6 +10,7 @@ import MoodPhotoResultPage from "./pages/MoodPhotoResultPage";
 import DailyJournalPage from "./pages/DailyJournalPage";
 import ArticlePage from "./pages/ArticlePage";
 import DeveloperPage from "./pages/developersPage";
+import { SelfAssessment, AssessmentStart, AssessmentForm, SummaryForm } from "./pages/Self-assessmentPage";
 
   const router = createBrowserRouter([
     {
@@ -43,6 +44,22 @@ import DeveloperPage from "./pages/developersPage";
         {
           path: "/article",
           element: <ArticlePage/>,
+        },
+        {
+          path: "/self-assesment",
+          element: <SelfAssessment/>,
+        },
+        {
+          path: "/self-assessment/start",
+          element: <AssessmentStart />,
+        },
+        {
+          path: "/self-assessment/form",
+          element: <AssessmentForm />,
+        },
+        {
+          path: "/self-assessment/summary",
+          element: <SummaryForm />,
         },
         {
           path: "/developer",
