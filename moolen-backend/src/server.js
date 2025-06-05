@@ -10,31 +10,13 @@ const init = async () => {
     port: process.env.PORT || 3001,
     host: 'localhost',
     routes: {
-      cors: { // Konfigurasi CORS
+      cors: { 
         origin: ['http://localhost:5173', 'http://localhost:3000'], // Ganti dengan URL frontend Anda jika berbeda
         credentials: true
       }
     }
   });
-
-  // Daftarkan rute
   server.route(tipsRoutes);
-
-  // Plugin untuk dokumentasi (opsional, tapi sangat membantu)
-  // const swaggerOptions = {
-  //   info: {
-  //     title: 'Moolen API Documentation',
-  //     version: '1.0.0',
-  //   },
-  // };
-  // await server.register([
-  //   require('@hapi/inert'),
-  //   require('@hapi/vision'),
-  //   {
-  //     plugin: require('hapi-swagger'),
-  //     options: swaggerOptions,
-  //   },
-  // ]);
 
 
   await server.start();

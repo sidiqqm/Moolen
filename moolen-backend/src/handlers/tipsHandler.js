@@ -65,9 +65,6 @@ const getTipById = async (request, h) => {
   }
 };
 
-// --- Fungsi untuk Admin (CRUD) ---
-// Anda mungkin perlu menambahkan autentikasi/otorisasi di sini nantinya
-
 const createTip = async (request, h) => {
   try {
     const { title, content, category, image_url } = request.payload;

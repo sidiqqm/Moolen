@@ -1,49 +1,40 @@
-// src/scripts/importTipsFromCsv.js
+
 const fs = require('fs');
 const path = require('path');
 const csv = require('csv-parser');
-const dbPool = require('../config/database');// Path disesuaikan jika config di root
+const dbPool = require('../config/database');
 
-const csvFilePath = path.join(__dirname, 'health_tips.csv'); // Pastikan file CSV ada di sini
+const csvFilePath = path.join(__dirname, 'health_tips.csv');
 const tips = [];
 
 const importData = async () => {
   try {
-    // Opsi: Hapus data lama jika Anda ingin impor bersih setiap kali
-    // await dbPool.query('DELETE FROM daily_tips');
-    // console.log('Old tips deleted.');
-    // await dbPool.query('ALTER TABLE daily_tips AUTO_INCREMENT = 1');
-    // console.log('AUTO_INCREMENT reset.');
 
     fs.createReadStream(csvFilePath)
       .pipe(csv({
         mapHeaders: ({ header, index }) => {
-          // Pemetaan nama kolom dari CSV ke nama kolom database
           if (header.trim().toLowerCase() === 'judul artikel') return 'title';
           if (header.trim().toLowerCase() === 'isi artikel') return 'content';
           if (header.trim().toLowerCase() === 'gambar') return 'image_url';
           if (header.trim().toLowerCase() === 'sumber') return 'source_text';
-          // Abaikan kolom ID dari CSV jika DB menggunakan auto_increment
           if (header.trim().toLowerCase() === 'id') return null;
-          return header.trim().toLowerCase(); // untuk kolom lain jika ada, atau bisa dibuat null
+          return header.trim().toLowerCase(); 
         }
       }))
       .on('data', (row) => {
-        // Kolom 'category' tidak ada di CSV Anda, jadi akan default ke NULL di DB
-        // atau Anda bisa set nilai default di sini jika mau, misal: 'general'
         tips.push({
           title: row.title,
           content: row.content,
           image_url: row.image_url || null,
           source_text: row.source_text || null,
-          category: row.category || null, // Jika Anda menambahkan kolom category di CSV nantinya
+          category: row.category || null, 
         });
       })
       .on('end', async () => {
         console.log('CSV file successfully processed. Importing to database...');
         let importedCount = 0;
         for (const tip of tips) {
-          if (tip.title && tip.content) { // Hanya impor jika title dan content ada
+          if (tip.title && tip.content) { 
             try {
               await dbPool.query(
                 'INSERT INTO daily_tips (title, content, image_url, source_text, category) VALUES (?, ?, ?, ?, ?)',
@@ -68,7 +59,7 @@ const importData = async () => {
       });
   } catch (error) {
     console.error('Failed to import tips:', error);
-    if (dbPool && dbPool.end) { // Pastikan dbPool ada sebelum memanggil end
+    if (dbPool && dbPool.end) { 
         await dbPool.end();
     }
   }

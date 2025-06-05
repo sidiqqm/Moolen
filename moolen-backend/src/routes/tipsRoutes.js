@@ -1,4 +1,4 @@
-// routes/tipsRoutes.js
+
 const Joi = require('joi');
 const {
   getAllTips,
@@ -39,7 +39,6 @@ const tipsRoutes = [
       }
     }
   },
-  // Admin routes (placeholder - add auth later)
   {
     method: 'POST',
     path: '/api/admin/tips',
@@ -55,7 +54,6 @@ const tipsRoutes = [
           image_url: Joi.string().uri().optional().allow(null, '')
         })
       }
-      // Add authentication strategy here later
     }
   },
   {
@@ -76,7 +74,6 @@ const tipsRoutes = [
           image_url: Joi.string().uri().optional().allow(null, '')
         })
       }
-      // Add authentication strategy here later
     }
   },
   {
@@ -91,7 +88,6 @@ const tipsRoutes = [
           id: Joi.number().integer().required()
         })
       }
-      // Add authentication strategy here later
     }
   }
 ];
