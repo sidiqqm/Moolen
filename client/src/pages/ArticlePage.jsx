@@ -1,16 +1,61 @@
-import { useState } from "react";
+// client/src/pages/ArticlePage.jsx
+import { useEffect, useState } from "react";
+import Footer from "../components/Footer";
 import { Button } from "../components/ui/Button";
 import { Card } from "../components/ui/Card";
-import { Tabs, TabsList, TabsTrigger } from "../components/ui/Tabs";
-import Footer from "../components/Footer";
 
 function ArticlePage() {
-  const [activeTab, setActiveTab] = useState("all");
+  const [articles, setArticles] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [pagination, setPagination] = useState({
+    currentPage: 1,
+    totalPages: 1,
+    limit: 8, 
+    totalTips: 0
+  });
 
-  const filteredArticles =
-    activeTab === "all"
-      ? articles
-      : articles.filter((article) => article.category === activeTab);
+  useEffect(() => {
+    const fetchArticles = async () => {
+      setLoading(true);
+      setError(null);
+      const url = `http://localhost:3001/api/tips?page=${pagination.currentPage}&limit=${pagination.limit}`;
+
+      try {
+        const response = await fetch(url);
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status} - ${response.statusText}`);
+        }
+        const responseData = await response.json();
+
+        if (responseData.status === 'success') {
+          setArticles(responseData.data || []);
+          if (responseData.pagination) {
+            setPagination(responseData.pagination);
+          }
+        } else {
+          throw new Error(responseData.message || 'Failed to fetch articles');
+        }
+      } catch (e) {
+        setError(e.message);
+        console.error("Failed to fetch articles:", e);
+        setArticles([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchArticles();
+  }, [pagination.currentPage, pagination.limit]); // 'activeTab' dihapus dari array dependensi
+
+  const handlePageChange = (newPage) => {
+    if (newPage >= 1 && newPage <= pagination.totalPages) {
+      setPagination(prev => ({ ...prev, currentPage: newPage }));
+    }
+  };
+
+  if (loading) return <p className="pt-40 text-center text-xl">Loading articles...</p>;
+  if (error) return <p className="pt-40 text-center text-red-500 text-xl">Error: {error}</p>;
 
   return (
     <main className="min-h-screen bg-sky-100">
@@ -38,232 +83,72 @@ function ArticlePage() {
 
       {/* Library Section */}
       <section className="container mx-auto px-4 py-25">
-        <div className="flex flex-col items-center mb-10">
+        <div className="flex flex-col items-center mb-10 pt-10">
           <h2 className="text-4xl font-bold mb-1">Daily Tips & Inspirations</h2>
           <div className="relative">
             <img
-              // eslint-disable-next-line no-constant-binary-expression
-              src={"/redline.png" || "/placeholder.svg"}
+              src={"/redline.png"}
               alt="Decorative underline"
               className="object-contain w-48 h-5"
             />
           </div>
         </div>
-
-        {/* Category Filters */}
-        <Tabs
-          defaultValue="all"
-          className="mb-8 flex justify-center"
-          onValueChange={setActiveTab}
-        >
-          <TabsList className="flex gap-8 bg-transparent shadow-none">
-            <TabsTrigger
-              value="meditation"
-              className={`group inline-flex items-center gap-2 rounded-full px-5 py-2 transition-colors duration-300 ${
-                activeTab === "meditation"
-                  ? "bg-black text-white"
-                  : "bg-[#fef6f6] text-black hover:bg-black hover:text-white"
-              }`}
-            >
-              <img
-                src={
-                  activeTab === "meditation"
-                    ? "/mindfullness-wt.png"
-                    : "/mindfullness.png"
-                }
-                alt="Mindfulness"
-                className="w-5 h-5 transition-all duration-300"
-              />
-              Meditation
-            </TabsTrigger>
-
-            <TabsTrigger
-              value="motivation"
-              className={`group inline-flex items-center gap-2 rounded-full px-5 py-2 transition-colors duration-300 ${
-                activeTab === "motivation"
-                  ? "bg-black text-white"
-                  : "bg-[#fef6f6] text-black hover:bg-black hover:text-white"
-              }`}
-            >
-              <img
-                src={
-                  activeTab === "motivation"
-                    ? "/motivation-wt.png"
-                    : "/motivation.png"
-                }
-                alt="Motivation"
-                className="w-5 h-5 transition-all duration-300"
-              />
-              Motivation
-            </TabsTrigger>
-
-            <TabsTrigger
-              value="self-care"
-              className={`group inline-flex items-center gap-2 rounded-full px-5 py-2 transition-colors duration-300 ${
-                activeTab === "self-care"
-                  ? "bg-black text-white"
-                  : "bg-[#fef6f6] text-black hover:bg-black hover:text-white"
-              }`}
-            >
-              <img
-                src={
-                  activeTab === "self-care"
-                    ? "/selfcare-wt.png"
-                    : "/selfcare.png"
-                }
-                alt="Self Care"
-                className="w-5 h-5 transition-all duration-300"
-              />
-              Self Care
-            </TabsTrigger>
-
-            <TabsTrigger
-              value="emotional"
-              className={`group inline-flex items-center gap-2 rounded-full px-5 py-2 transition-colors duration-300 ${
-                activeTab === "emotional"
-                  ? "bg-black text-white"
-                  : "bg-[#fef6f6] text-black hover:bg-black hover:text-white"
-              }`}
-            >
-              <img
-                src={
-                  activeTab === "emotional"
-                    ? "/emotional-wt.png"
-                    : "/emotional.png"
-                }
-                alt="Emotional"
-                className="w-5 h-5 transition-all duration-300"
-              />
-              Emotional Support
-            </TabsTrigger>
-          </TabsList>
-        </Tabs>
-
         {/* Article Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-10">
-          {filteredArticles.map((article, index) => (
-            <Card
-              key={index}
-              className="overflow-hidden group relative h-72 transform transition duration-500 hover:scale-105 hover:shadow-xl cursor-pointer"
-            >
-              <div className="absolute inset-0">
-                <img
-                  src={article.image || "/placeholder.svg"}
-                  alt={article.title}
-                  className="w-full h-full object-cover"
-                />
-                <div className="absolute inset-0 bg-black/40"></div>
-              </div>
-              <div className="absolute bottom-0 left-0 right-0 p-4 text-white">
-                <h3 className="text-lg font-bold">{article.title}</h3>
-                <p className="text-sm opacity-90">{article.excerpt}</p>
-              </div>
-            </Card>
-          ))}
-        </div>
-
-        <div className="flex justify-center items-center gap-2 mt-6">
-          <span className="text-sm text-gray-600">Show all</span>
-          <div className="flex gap-1">
-            <Button className="w-6 h-6 rounded-full border border-gray-400 flex items-center justify-center">
-              <span className="sr-only">Previous page</span>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="16"
-                height="16"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                className="lucide lucide-chevron-left"
+        {articles.length > 0 ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10">
+            {articles.map((article) => (
+              <Card
+                key={article.id}
+                className="overflow-hidden group relative h-72 transform transition duration-500 hover:scale-105 hover:shadow-xl cursor-pointer"
               >
-                <path d="m15 18-6-6 6-6" />
-              </svg>
-            </Button>
-            <Button className="w-6 h-6 rounded-full border border-gray-400 flex items-center justify-center">
-              <span className="sr-only">Next page</span>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="16"
-                height="16"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                className="lucide lucide-chevron-right"
-              >
-                <path d="m9 18 6-6-6-6" />
-              </svg>
-            </Button>
+                <div className="absolute inset-0">
+                  <img
+                    src={article.image_url || "/placeholder.svg"} 
+                    alt={article.title}
+                    className="w-full h-full object-cover"
+                  />
+                  <div className="absolute inset-0 bg-black/40"></div>
+                </div>
+                <div className="absolute bottom-0 left-0 right-0 p-4 text-white">
+                  <h3 className="text-lg font-bold">{article.title}</h3>
+                  <p className="text-sm opacity-90 line-clamp-2">
+                    {article.content}
+                  </p>
+                </div>
+              </Card>
+            ))}
           </div>
-        </div>
+        ) : (
+          !loading && <p className="text-center text-gray-600 mt-10">No articles found.</p>
+        )}
+
+        {/* Pagination Controls */}
+        {articles.length > 0 && pagination.totalPages > 1 && (
+            <div className="flex justify-center items-center gap-2 mt-10">
+            <Button
+                onClick={() => handlePageChange(pagination.currentPage - 1)}
+                disabled={pagination.currentPage <= 1}
+                className="w-8 h-8 rounded-full border border-gray-400 flex items-center justify-center disabled:opacity-50 hover:bg-gray-200"
+                aria-label="Previous page"
+            >
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m15 18-6-6 6-6" /></svg>
+            </Button>
+            <span className="text-sm text-gray-700">
+                Page {pagination.currentPage} of {pagination.totalPages}
+            </span>
+            <Button
+                onClick={() => handlePageChange(pagination.currentPage + 1)}
+                disabled={pagination.currentPage >= pagination.totalPages}
+                className="w-8 h-8 rounded-full border border-gray-400 flex items-center justify-center disabled:opacity-50 hover:bg-gray-200"
+                aria-label="Next page"
+            >
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6" /></svg>
+            </Button>
+            </div>
+        )}
       </section>
       <Footer />
     </main>
   );
 }
-
-const articles = [
-  {
-    title: "Morning Meditation Guide",
-    excerpt: "Start your day with peace and clarity",
-    image:
-      "https://images.unsplash.com/photo-1506126613408-eca07ce68773?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8bWVkaXRhdGlvbnxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=600&q=60",
-    category: "meditation",
-  },
-  {
-    title: "Finding Happiness in the Little Things",
-    excerpt: "Simple ways to appreciate everyday moments",
-    image:
-      "https://images.unsplash.com/photo-1513279922550-250c2129b13a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8aGFwcGluZXNzfGVufDB8fDB8fHww&auto=format&fit=crop&w=600&q=60",
-    category: "self-care",
-  },
-  {
-    title: "Finding Peace in Times of Stress",
-    excerpt: "Techniques to manage anxiety and stress",
-    image:
-      "https://images.unsplash.com/photo-1499209974431-9dddcece7f88?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8cGVhY2V8ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&w=600&q=60",
-    category: "emotional",
-  },
-  {
-    title: "Mindfulness Practices for Better Sleep",
-    excerpt: "Improve your sleep quality with these techniques",
-    image:
-      "https://images.unsplash.com/photo-1541480601022-2308c0f02487?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8c2xlZXB8ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&w=600&q=60",
-    category: "meditation",
-  },
-  {
-    title: "Building Emotional Resilience",
-    excerpt: "Strengthen your ability to handle life's challenges",
-    image:
-      "https://images.unsplash.com/photo-1518609878373-06d740f60d8b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8c3RyZW5ndGh8ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&w=600&q=60",
-    category: "emotional",
-  },
-  {
-    title: "Self-Care Rituals for Mental Clarity",
-    excerpt: "Simple practices to clear your mind",
-    image:
-      "https://images.unsplash.com/photo-1507652313519-d4e9174996dd?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8Y2xlYXIlMjBtaW5kfGVufDB8fDB8fHww&auto=format&fit=crop&w=600&q=60",
-    category: "self-care",
-  },
-  {
-    title: "Building Emotional Resilience",
-    excerpt: "Strengthen your ability to handle life's challenges",
-    image:
-      "https://images.unsplash.com/photo-1518609878373-06d740f60d8b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8c3RyZW5ndGh8ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&w=600&q=60",
-    category: "motivation",
-  },
-  {
-    title: "Self-Care Rituals for Mental Clarity",
-    excerpt: "Simple practices to clear your mind",
-    image:
-      "https://images.unsplash.com/photo-1507652313519-d4e9174996dd?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8Y2xlYXIlMjBtaW5kfGVufDB8fDB8fHww&auto=format&fit=crop&w=600&q=60",
-    category: "motivation",
-  },
-];
-
 export default ArticlePage;
