@@ -50,7 +50,7 @@ function DailyJournalPage() {
           <button className="bg-white text-gray-800 px-4 py-1 rounded-full border border-gray-200 text-sm">
             This Month
           </button>
-          <button className="text-gray-600">
+          <button className="text-gray-600 cursor-pointer">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="24"
