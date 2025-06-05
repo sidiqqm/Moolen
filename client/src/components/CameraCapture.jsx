@@ -1,67 +1,64 @@
-import React, {
-  useRef,
-  useEffect,
-  useState,
-  forwardRef,
-  useImperativeHandle,
-} from "react";
+import React, { useEffect, useRef, useState } from "react";
 
-// Gunakan forwardRef agar parent bisa akses fungsi capture
-const CameraCapture = forwardRef((props, ref) => {
+const CameraCapture = ({ onCapture, disabled }) => {
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
   const [stream, setStream] = useState(null);
 
   useEffect(() => {
-    const initCamera = async () => {
+    const startCamera = async () => {
       try {
-        const mediaStream = await navigator.mediaDevices.getUserMedia({
-          video: true,
-        });
+        const mediaStream = await navigator.mediaDevices.getUserMedia({ video: true });
         videoRef.current.srcObject = mediaStream;
         setStream(mediaStream);
       } catch (err) {
-        console.error("Tidak dapat mengakses kamera:", err);
+        console.error("Tidak bisa mengakses kamera:", err);
       }
     };
-    initCamera();
+
+    startCamera();
 
     return () => {
       if (stream) {
         stream.getTracks().forEach((track) => track.stop());
       }
     };
-  }, [stream]);
+  }, []);
 
-  // Fungsi capture yang bisa dipanggil dari luar (parent)
-  useImperativeHandle(ref, () => ({
-    capture: () => {
-      const video = videoRef.current;
-      const canvas = canvasRef.current;
+  // Capture gambar dan kirim ke parent
+  const handleCapture = () => {
+    const video = videoRef.current;
+    const canvas = canvasRef.current;
+    if (!video || !canvas) return;
 
-      if (!video || !canvas) return null;
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+    const ctx = canvas.getContext("2d");
+    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
 
-      canvas.width = video.videoWidth;
-      canvas.height = video.videoHeight;
-      const ctx = canvas.getContext("2d");
-      ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-
-      // Kembalikan data gambar (misalnya base64)
-      return canvas.toDataURL("image/png");
-    },
-  }));
+    canvas.toBlob((blob) => {
+      if (blob) onCapture(blob);
+    }, "image/jpeg", 0.9);
+  };
 
   return (
-    <div className="w-full flex flex-col items-center gap-4">
+    <div className="flex flex-col items-center gap-4">
       <video
         ref={videoRef}
         autoPlay
         playsInline
-        className="border rounded-lg shadow-md lg:w-[640px] lg:h-[360px] md:w-[480px] md:h-[300px] w-[360px] h-[420px] object-cover"
+        className="rounded-lg shadow-md lg:w-[640px] lg:h-[360px] w-[100%] object-cover"
       />
-      <canvas ref={canvasRef} className="border rounded-lg shadow-md hidden" />
+      <canvas ref={canvasRef} className="hidden" />
+      <button
+        onClick={handleCapture}
+        disabled={disabled}
+        className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
+      >
+        Capture Mood
+      </button>
     </div>
   );
-});
+};
 
 export default CameraCapture;

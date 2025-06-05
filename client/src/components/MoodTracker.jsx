@@ -1,5 +1,4 @@
 import React, { useRef, useState } from "react";
-import apiRequest from "../lib/apiRequest";
 
 const MoodTracker = () => {
   const videoRef = useRef(null);
@@ -17,7 +16,9 @@ const MoodTracker = () => {
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ video: true });
       streamRef.current = stream;
-      videoRef.current.srcObject = stream;
+      if (videoRef.current) {
+        videoRef.current.srcObject = stream;
+      }
     } catch (err) {
       setError("Tidak dapat mengakses kamera");
     }
@@ -45,7 +46,11 @@ const MoodTracker = () => {
     const context = canvas.getContext("2d");
     canvas.width = video.videoWidth;
     canvas.height = video.videoHeight;
+
+    context.translate(canvas.width, 0);
+    context.scale(-1, 1);
     context.drawImage(video, 0, 0, canvas.width, canvas.height);
+    context.setTransform(1, 0, 0, 1, 0, 0);
 
     const imageUrl = canvas.toDataURL("image/jpeg");
     setCapturedImageUrl(imageUrl);
@@ -53,7 +58,6 @@ const MoodTracker = () => {
     canvas.toBlob(
       async (blob) => {
         if (!blob) return;
-
         if (blob.size > 10 * 1024 * 1024) {
           setError("Ukuran gambar melebihi 10MB");
           return;
@@ -64,63 +68,32 @@ const MoodTracker = () => {
         setError("");
         setSuccessMsg("");
 
-        // Dummy mood prediction
-        const dummyMoods = ["Happy", "Sad", "Neutral", "Angry", "Excited"];
-        const mood = dummyMoods[Math.floor(Math.random() * dummyMoods.length)];
-        const confidence = `${(Math.random() * (100 - 70) + 70).toFixed(2)}%`;
-        const createdAt = new Date().toLocaleDateString("en-CA");
-        setMoodData({ mood, confidence });
-
-        console.log("[DEBUG] Data yang akan dikirim:");
-        console.log("Tanggal:", createdAt);
-        console.log("Mood:", mood);
-        console.log("Confidence:", confidence);
-        console.log("Blob:", blob);
-
-        const formData = new FormData();
-        formData.append("image", blob, `capture-${createdAt}.jpg`);
-        formData.append("createdAt", createdAt);
-        formData.append("mood", mood);
-        formData.append("confidence", confidence);
-
-        // Jika tidak menggunakan dummy data, ganti dengan request ke server
-        // const createdAt = new Date().toISOString();
-
-        // const formData = new FormData();
-        // formData.append("image", blob, `capture-${createdAt}.jpg`);
-        // formData.append("createdAt", createdAt);
-
-        // try {
-        //   const response = await fetch("http://localhost:3000/api/moods", {
-        //     method: "POST",
-        //     body: formData,
-        //   });
-
-        //   if (!response.ok) throw new Error("Gagal mengirim data ke server");
-
-        //   const result = await response.json();
-        //   const { mood, confidence } = result;
-
-        //   setMoodData({ mood, confidence });
-
-        //   console.log("[BACKEND RESULT]", result);
-        //   setSuccessMsg(
-        //     `Mood "${mood}" dikirim dengan confidence ${confidence}`
-        //   );
-        // } catch (err) {
-        //   setError(`Error: ${err.message}`);
-        // } finally {
-        //   setLoading(false);
-        // }
-
         try {
-          const response = await apiRequest.post("/moods", formData);
-          setSuccessMsg(
-            `Mood "${mood}" dikirim dengan confidence ${confidence}`
-          );
-        } catch (error) {
-          console.error("Error:", error);
-          setError("Gagal mengirim data ke server");
+          const formData = new FormData();
+          formData.append("image", blob, "capture.jpg");
+
+          const response = await fetch("http://127.0.0.1:5000/predict", {
+            method: "POST",
+            body: formData,
+          });
+
+          if (!response.ok) throw new Error("Gagal memproses gambar");
+
+          const { mood, confidence } = await response.json();
+          setMoodData({ mood, confidence });
+          setSuccessMsg(`Mood "${mood}" dikirim dengan confidence ${confidence}`);
+
+          await fetch("http://127.0.0.1:5000/save-mood", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              mood,
+              confidence,
+              timestamp: new Date().toISOString().slice(0, 19).replace("T", " "),
+            }),
+          });
+        } catch (err) {
+          setError(`Error: ${err.message}`);
         } finally {
           setLoading(false);
         }
@@ -134,11 +107,14 @@ const MoodTracker = () => {
     <div className="p-4 max-w-md mx-auto bg-white shadow rounded-xl space-y-4">
       <h2 className="text-xl font-bold">Mood Tracker with Camera</h2>
 
-      {!capturedImageUrl && (
-        <video ref={videoRef} autoPlay className="w-full rounded" />
-      )}
-
-      {capturedImageUrl && (
+      {!capturedImageUrl ? (
+        <video
+          ref={videoRef}
+          autoPlay
+          className="w-full rounded"
+          style={{ transform: "scaleX(-1)" }}
+        />
+      ) : (
         <img
           src={capturedImageUrl}
           alt="Hasil capture"
@@ -149,7 +125,7 @@ const MoodTracker = () => {
       <canvas ref={canvasRef} className="hidden" />
 
       <div className="flex gap-2 flex-wrap">
-        {!capturedImageUrl && (
+        {!capturedImageUrl ? (
           <>
             <button
               onClick={startCamera}
@@ -165,9 +141,7 @@ const MoodTracker = () => {
               {loading ? "Processing..." : "Capture"}
             </button>
           </>
-        )}
-
-        {capturedImageUrl && (
+        ) : (
           <button
             onClick={resetCapture}
             className="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600"
