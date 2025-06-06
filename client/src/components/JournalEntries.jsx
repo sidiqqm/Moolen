@@ -1,10 +1,74 @@
 import { useState } from "react";
 
-function JournalEntries({ entries }) {
+function JournalEntries({ entries, onDeleteEntry, onEditEntry }) {
   const [activeDropdown, setActiveDropdown] = useState(null);
+  const [editingEntry, setEditingEntry] = useState(null);
+  const [editFormData, setEditFormData] = useState({
+    title: "",
+    mood: "",
+    jurnal: "",
+  });
+  const [expandedEntries, setExpandedEntries] = useState({});
 
   const toggleDropdown = (id) => {
     setActiveDropdown(activeDropdown === id ? null : id);
+  };
+
+  const handleDelete = (id) => {
+    onDeleteEntry(id);
+    setActiveDropdown(null);
+  };
+
+  const handleEdit = (entry) => {
+    setEditingEntry(entry);
+    setEditFormData({
+      title: entry.title,
+      mood: entry.mood,
+      jurnal: entry.jurnal,
+    });
+    setActiveDropdown(null);
+  };
+
+  const handleEditInputChange = (e) => {
+    const { name, value } = e.target;
+    setEditFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const handleEditSubmit = (e) => {
+    e.preventDefault();
+    const updatedEntry = {
+      ...editingEntry,
+      title: editFormData.title,
+      mood: editFormData.mood,
+      jurnal: editFormData.jurnal,
+      emote: `/${editFormData.mood}.png`,
+      color: getColorByMood(editFormData.mood),
+    };
+    onEditEntry(updatedEntry);
+    setEditingEntry(null);
+  };
+
+  const toggleExpandEntry = (id) => {
+    setExpandedEntries((prev) => ({
+      ...prev,
+      [id]: !prev[id],
+    }));
+  };
+
+  const getColorByMood = (mood) => {
+    const moodColors = {
+      happy: "bg-gradient-to-b from-[#FFFAA7] to-[#FFF100]",
+      sad: "bg-gradient-to-br from-[#00A2E5] to-[#FFD4FE]",
+      angry: "bg-gradient-to-br from-[#FF5353] to-[#FFB9B9]",
+      fear: "bg-gradient-to-br from-[#00A2E5] to-[#FFFFFF]",
+      surprise: "bg-gradient-to-br from-[#E484FF] to-[#FCDAFF]",
+      disgust: "bg-gradient-to-br from-[#AEAEAE] to-[#E9E1E1]",
+      neutral: "bg-gradient-to-br from-[#4ADE80] to-[#BBF7D0]",
+    };
+    return moodColors[mood] || "bg-gradient-to-br from-[#4ADE80] to-[#BBF7D0]";
   };
 
   if (entries.length === 0) {
@@ -20,15 +84,100 @@ function JournalEntries({ entries }) {
   }
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-6">
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
+      {/* Edit Modal */}
+      {editingEntry && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-lg p-6 w-full max-w-md">
+            <h2 className="text-2xl font-bold mb-4">Edit Journal Entry</h2>
+            <form onSubmit={handleEditSubmit}>
+              <div className="mb-4">
+                <label
+                  className="block text-gray-700 mb-2"
+                  htmlFor="edit-title"
+                >
+                  Title
+                </label>
+                <input
+                  type="text"
+                  id="edit-title"
+                  name="title"
+                  value={editFormData.title}
+                  onChange={handleEditInputChange}
+                  className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  required
+                />
+              </div>
+
+              <div className="mb-4">
+                <label className="block text-gray-700 mb-2" htmlFor="edit-mood">
+                  Mood
+                </label>
+                <select
+                  id="edit-mood"
+                  name="mood"
+                  value={editFormData.mood}
+                  onChange={handleEditInputChange}
+                  className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  required
+                >
+                  <option value="">Select your mood</option>
+                  <option value="happy">😊 Happy</option>
+                  <option value="sad">😢 Sad</option>
+                  <option value="angry">😠 Angry</option>
+                  <option value="fear">😨 Fear</option>
+                  <option value="surprise">😲 Surprise</option>
+                  <option value="disgust">🤢 Disgust</option>
+                  <option value="neutral">😐 Neutral</option>
+                </select>
+              </div>
+
+              <div className="mb-6">
+                <label
+                  className="block text-gray-700 mb-2"
+                  htmlFor="edit-jurnal"
+                >
+                  Your Journal
+                </label>
+                <textarea
+                  id="edit-jurnal"
+                  name="jurnal"
+                  value={editFormData.jurnal}
+                  onChange={handleEditInputChange}
+                  className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 min-h-[150px]"
+                  required
+                />
+              </div>
+
+              <div className="flex justify-end space-x-3">
+                <button
+                  type="button"
+                  onClick={() => setEditingEntry(null)}
+                  className="px-4 py-2 text-gray-600 rounded-lg hover:bg-gray-100"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="px-4 py-2 bg-indigo-900 text-white rounded-lg hover:bg-indigo-800"
+                >
+                  Save Changes
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* Journal Entries */}
       {entries.map((entry) => (
         <div
           key={entry.id}
-          className={`${entry.color} p-6 rounded-lg shadow-2xl relative flex flex-col h-full lg:h-[505px] border border-gray-500 hover:shadow-lg transition-shadow duration-300`}
+          className={`${entry.color} p-6 rounded-lg shadow-2xl relative flex flex-col h-full lg:h-[505px] max-h-[505px] border border-gray-500 hover:shadow-lg transition-shadow duration-300 overflow-hidden`}
         >
           {/* Header Section */}
-          <div className="flex justify-between items-center mb-2">
-            <h3 className="font-semibold text-xl">{entry.title}</h3>
+          <div className="flex justify-between items-center mb-6">
+            <h3 className="font-medium text-lg capitalize">{entry.title}</h3>
             <div className="relative">
               <button
                 onClick={() => toggleDropdown(entry.id)}
@@ -53,13 +202,16 @@ function JournalEntries({ entries }) {
               {activeDropdown === entry.id && (
                 <div className="absolute right-0 mt-2 w-40 bg-white rounded-md shadow-lg z-10">
                   <div className="py-1">
-                    <button className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                    <button
+                      onClick={() => handleEdit(entry)}
+                      className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                    >
                       Edit
                     </button>
-                    <button className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                      Share
-                    </button>
-                    <button className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                    <button
+                      onClick={() => handleDelete(entry.id)}
+                      className="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100"
+                    >
                       Delete
                     </button>
                   </div>
@@ -69,26 +221,42 @@ function JournalEntries({ entries }) {
           </div>
 
           {/* Journal Section */}
-          <div className="flex flex-col flex-grow gap-2">
+          <div className="flex flex-col flex-grow overflow-hidden gap-4">
             {/* Image Container */}
             <div className="flex justify-center items-center min-h-[180px]">
               {entry.emote && (
                 <img
                   src={entry.emote}
                   alt="Emote"
-                  className="max-w-full max-h-[280px]"
+                  className="max-w-full max-h-[160px]"
                 />
               )}
             </div>
 
             {/* Text Journal */}
-            <div className="flex flex-col flex-grow gap-4">
-              <p className="text-md line-clamp-6 flex-grow">
-                {entry.jurnal || "No journal entry yet..."}
-              </p>
-              <div className="text-sm text-right font-medium">
-                {entry.date || "No date"}
+            <div className="flex flex-col flex-grow overflow-hidden">
+              <div className="overflow-y-auto pr-2 flex-grow">
+                <p
+                  className={`text-sm ${
+                    expandedEntries[entry.id] ? "" : "line-clamp-7"
+                  } text-justify px-1`}
+                >
+                  {entry.jurnal || "No journal entry yet..."}
+                </p>
               </div>
+            </div>
+
+            {/* Date and Show More Button - Always at bottom */}
+            <div className="flex justify-between items-center text-sm font-medium mt-auto pt-2">
+              <span>{entry.date || "No date"}</span>
+              {entry.jurnal && entry.jurnal.length > 215 && (
+                <button
+                  onClick={() => toggleExpandEntry(entry.id)}
+                  className="text-indigo-600 hover:text-indigo-800 text-xs"
+                >
+                  {expandedEntries[entry.id] ? "Show Less" : "Show More"}
+                </button>
+              )}
             </div>
           </div>
         </div>

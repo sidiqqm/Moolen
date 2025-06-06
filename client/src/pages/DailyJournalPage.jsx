@@ -49,15 +49,27 @@ function DailyJournalPage() {
     setShowForm(false);
   };
 
+  const handleEditEntry = (updatedEntry) => {
+    setEntries((prevEntries) =>
+      prevEntries.map((entry) =>
+        entry.id === updatedEntry.id ? updatedEntry : entry
+      )
+    );
+  };
+
+  const handleDeleteEntry = (id) => {
+    setEntries((prevEntries) => prevEntries.filter((entry) => entry.id !== id));
+  };
+
   const getColorByMood = (mood) => {
     const moodColors = {
-      happy: "bg-gradient-to-br from-[#FFFAA7] to-[#FFF100]",
-      sad: "bg-gradient-to-br from-[#00A2E5] to-[#FFD4FE]",
-      angry: "bg-gradient-to-br from-[#FF5353] to-[#FFB9B9]",
-      fear: "bg-gradient-to-br from-[#00A2E5] to-[#FFFFFF]",
-      surprise: "bg-gradient-to-br from-[#E484FF] to-[#FCDAFF]",
-      disgust: "bg-gradient-to-br from-[#AEAEAE] to-[#E9E1E1]",
-      neutral: "bg-gradient-to-br from-[#4ADE80] to-[#BBF7D0]",
+      happy: "bg-gradient-to-br from-[#e6e296] to-[#e6db00]",
+      sad: "bg-gradient-to-br from-[#0093cf] to-[#e6bfe5]", 
+      angry: "bg-gradient-to-br from-[#e54b4b] to-[#e6a3a3]", 
+      fear: "bg-gradient-to-br from-[#0093cf] to-[#e6e6e6]",
+      surprise: "bg-gradient-to-br from-[#e6c0e6] to-[#cf6fd9]",
+      disgust: "bg-gradient-to-br from-[#9c9c9c] to-[#d1cbcb]", 
+      neutral: "bg-gradient-to-br from-[#3fca72] to-[#a3dfb3]",
     };
     return moodColors[mood] || "bg-gradient-to-br from-[#4ADE80] to-[#BBF7D0]";
   };
@@ -189,7 +201,7 @@ function DailyJournalPage() {
       <MarqueeText />
 
       {/* Diary Section */}
-      <section className="container mx-auto px-4 py-45">
+      <section className="container mx-auto px-4 pt-24">
         <div className="text-center mb-8 relative">
           <span className="relative inline-block min-w-[16rem] min-h-[4rem] font-bold font-nunito text-4xl">
             Your Diary
@@ -252,7 +264,11 @@ function DailyJournalPage() {
             onDateSelect={handleDateSelect}
             entries={entries}
           />
-          <JournalEntries entries={filteredEntries} />
+          <JournalEntries
+            entries={filteredEntries}
+            onDeleteEntry={handleDeleteEntry}
+            onEditEntry={handleEditEntry}
+          />
         </div>
       </section>
 
