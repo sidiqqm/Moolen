@@ -1,85 +1,43 @@
 import { useState } from "react";
 
-const entries = [
-  {
-    id: 1,
-    title: "Malam Mingguan",
-    content:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur vel fermentum elit. Quisque vitae blandit libero. Nullam id sapien nec ligula mattis pretium ullamcorper. Justo nisi egestas risus vel commodo nisi tellus vitae magna. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur vel fermentum elit. Quisque vitae blandit libero. Nullam id sapien nec ligula mattis pretium ullamcorper. Justo nisi egestas risus vel commodo nisi tellus vitae magna.",
-    time: "13:30",
-    color: "bg-yellow-200",
-  },
-  {
-    id: 2,
-    title: "Malam Mingguan",
-    content:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur vel fermentum elit. Quisque vitae blandit libero. Nullam id sapien nec ligula mattis pretium ullamcorper. Justo nisi egestas risus vel commodo nisi tellus vitae magna. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur vel fermentum elit. Quisque vitae blandit libero. Nullam id sapien nec ligula mattis pretium ullamcorper. Justo nisi egestas risus vel commodo nisi tellus vitae magna.",
-    time: "14:30",
-    color: "bg-red-300",
-  },
-  {
-    id: 3,
-    title: "Malam Mingguan",
-    content:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur vel fermentum elit. Quisque vitae blandit libero. Nullam id sapien nec ligula mattis pretium ullamcorper. Justo nisi egestas risus vel commodo nisi tellus vitae magna. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur vel fermentum elit. Quisque vitae blandit libero. Nullam id sapien nec ligula mattis pretium ullamcorper. Justo nisi egestas risus vel commodo nisi tellus vitae magna.",
-    time: "15:30",
-    color: "bg-sky-200",
-  },
-  {
-    id: 4,
-    title: "Malam Mingguan",
-    content:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur vel fermentum elit. Quisque vitae blandit libero. Nullam id sapien nec ligula mattis pretium ullamcorper. Justo nisi egestas risus vel commodo nisi tellus vitae magna. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur vel fermentum elit. Quisque vitae blandit libero. Nullam id sapien nec ligula mattis pretium ullamcorper. Justo nisi egestas risus vel commodo nisi tellus vitae magna.",
-    time: "16:30",
-    color: "bg-green-300",
-  },
-  {
-    id: 5,
-    title: "Malam Mingguan",
-    content:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur vel fermentum elit. Quisque vitae blandit libero. Nullam id sapien nec ligula mattis pretium ullamcorper. Justo nisi egestas risus vel commodo nisi tellus vitae magna. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur vel fermentum elit. Quisque vitae blandit libero. Nullam id sapien nec ligula mattis pretium ullamcorper. Justo nisi egestas risus vel commodo nisi tellus vitae magna.",
-    time: "17:30",
-    color: "bg-purple-300",
-  },
-  {
-    id: 6,
-    title: "Malam Mingguan",
-    content:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur vel fermentum elit. Quisque vitae blandit libero. Nullam id sapien nec ligula mattis pretium ullamcorper. Justo nisi egestas risus vel commodo nisi tellus vitae magna. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur vel fermentum elit. Quisque vitae blandit libero. Nullam id sapien nec ligula mattis pretium ullamcorper. Justo nisi egestas risus vel commodo nisi tellus vitae magna.",
-    time: "18:30",
-    color: "bg-orange-300",
-  },
-];
-
-function JournalEntries() {
+function JournalEntries({ entries }) {
   const [activeDropdown, setActiveDropdown] = useState(null);
 
   const toggleDropdown = (id) => {
-    if (activeDropdown === id) {
-      setActiveDropdown(null);
-    } else {
-      setActiveDropdown(id);
-    }
+    setActiveDropdown(activeDropdown === id ? null : id);
   };
 
+  if (entries.length === 0) {
+    return (
+      <div className="text-center py-10">
+        <div className="inline-block p-6 bg-white rounded-lg shadow-md">
+          <p className="text-gray-600">
+            Anda tidak ada membuat jurnal hari ini
+          </p>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+    <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-6">
       {entries.map((entry) => (
         <div
           key={entry.id}
-          className={`${entry.color} p-4 rounded-lg shadow-sm relative`}
+          className={`${entry.color} p-6 rounded-lg shadow-2xl relative flex flex-col h-full lg:h-[505px] border border-gray-500 hover:shadow-lg transition-shadow duration-300`}
         >
-          <div className="flex justify-between items-start mb-2">
-            <h3 className="font-medium">{entry.title}</h3>
+          {/* Header Section */}
+          <div className="flex justify-between items-center mb-2">
+            <h3 className="font-semibold text-xl">{entry.title}</h3>
             <div className="relative">
               <button
                 onClick={() => toggleDropdown(entry.id)}
-                className="p-1 hover:bg-black/10 rounded-full"
+                className="p-2 hover:bg-black/10 rounded-full"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  width="16"
-                  height="16"
+                  width="18"
+                  height="18"
                   viewBox="0 0 24 24"
                   fill="none"
                   stroke="currentColor"
@@ -93,7 +51,7 @@ function JournalEntries() {
                 </svg>
               </button>
               {activeDropdown === entry.id && (
-                <div className="absolute right-0 mt-1 w-36 bg-white rounded-md shadow-lg z-10">
+                <div className="absolute right-0 mt-2 w-40 bg-white rounded-md shadow-lg z-10">
                   <div className="py-1">
                     <button className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
                       Edit
@@ -109,8 +67,30 @@ function JournalEntries() {
               )}
             </div>
           </div>
-          <p className="text-sm line-clamp-6">{entry.content}</p>
-          <div className="text-xs text-right mt-4">{entry.time}</div>
+
+          {/* Journal Section */}
+          <div className="flex flex-col flex-grow gap-2">
+            {/* Image Container */}
+            <div className="flex justify-center items-center min-h-[180px]">
+              {entry.emote && (
+                <img
+                  src={entry.emote}
+                  alt="Emote"
+                  className="max-w-full max-h-[280px]"
+                />
+              )}
+            </div>
+
+            {/* Text Journal */}
+            <div className="flex flex-col flex-grow gap-4">
+              <p className="text-md line-clamp-6 flex-grow">
+                {entry.jurnal || "No journal entry yet..."}
+              </p>
+              <div className="text-sm text-right font-medium">
+                {entry.date || "No date"}
+              </div>
+            </div>
+          </div>
         </div>
       ))}
     </div>
