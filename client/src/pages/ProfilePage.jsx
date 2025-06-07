@@ -1,5 +1,7 @@
-import React, { useState, useEffect } from "react";
-import apiRequest from "../lib/apiRequest"; // Adjust the import path as necessary
+import { useContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import apiRequest from "../lib/apiRequest";
+import { AuthContext } from "../lib/auth";
 
 // Debugging utility function
 const debugLog = (message, data = null) => {
@@ -16,38 +18,45 @@ const initialUser = {
   contact: "",
 };
 
-
 export default function ProfilePage() {
+  const { currentUser, updateUser } = useContext(AuthContext);
   const [user, setUser] = useState(initialUser);
   const [formData, setFormData] = useState(initialUser);
-  const [isLoading, setIsLoading] = useState(true); // Start with loading true
+  const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const [successMessage, setSuccessMessage] = useState(null);
+  const navigate = useNavigate();
 
   // Load user data from API
   useEffect(() => {
     const fetchUserData = async () => {
+      if (!currentUser) {
+        navigate("/login");
+        return;
+      }
       try {
         debugLog("Fetching user data...");
         setIsLoading(true);
         setError(null);
 
-        // Uncomment kalo api udah siap
-        // const response = await apiRequest.get('/api/profile');
-        // setUser(response.data);
-        // setFormData(response.data);
 
-        // dummy data
-        const mockUser = {
-          username: "Piraee",
-          email: "pirae@gmail.com",
-          bio: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-          contact: "+62 123 4567 890",
-        };
-        setUser(mockUser);
-        setFormData(mockUser);
-
-        debugLog("User data loaded", mockUser);
+        try {
+          const response = await apiRequest.get("/api/users/profile");
+          setUser(response.data);
+          setFormData(response.data);
+          debugLog("User data loaded from API", response.data);
+        } catch (apiErr) {
+          debugLog("API error, fallback to dummy", apiErr);
+          // dummy data
+          const mockUser = {
+            username: "Piraee",
+            email: "pirae@gmail.com",
+            bio: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+            contact: "+62 123 4567 890",
+          };
+          setUser(mockUser);
+          setFormData(mockUser);
+        }
       } catch (err) {
         debugLog("Error fetching user data", err);
         setError("Failed to load user data. Please try again later.");
@@ -57,7 +66,7 @@ export default function ProfilePage() {
     };
 
     fetchUserData();
-  }, []);
+  }, [currentUser, navigate]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -77,14 +86,8 @@ export default function ProfilePage() {
       setError(null);
       setSuccessMessage(null);
 
-      // Example API call - adjust according to your API
-      // const res = await apiRequest.put("/api/profile", formData);
-      // debugLog("Profile update response:", res);
-
-      // Simulate API call success
       await new Promise((resolve) => setTimeout(resolve, 1000));
 
-      // Update local user state with new data
       setUser(formData);
       setSuccessMessage("Profile updated successfully!");
     } catch (error) {
@@ -95,6 +98,15 @@ export default function ProfilePage() {
       );
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  const handleLogout = async () => {
+    try {
+      updateUser(null);
+      navigate("/");
+    } catch (err) {
+      console.log(err);
     }
   };
 
@@ -197,6 +209,12 @@ export default function ProfilePage() {
               <span className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-8 h-1 bg-blue-500 rounded-full"></span>
               <p className="text-gray-600 text-sm">{user.email}</p>
             </h2>
+            <button
+              onClick={handleLogout}
+              className="mt-2 px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded-md text-sm transition-all"
+            >
+              Logout
+            </button>
           </div>
 
           <div className="border-t border-gray-100 pt-4">
