@@ -1,11 +1,15 @@
-import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { loginUser } from '../lib/auth';
 import { useGoogleLogin } from '@react-oauth/google';
+import { useContext, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import apiRequest from '../lib/apiRequest';
+import { AuthContext } from '../lib/auth';
 
 const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const { updateUser } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const loginWithGoogle = useGoogleLogin({
@@ -20,33 +24,45 @@ const LoginPage = () => {
     },
   });
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const result = loginUser(email, password);
-    alert(result.message);
-    if (result.success) {
+    setIsLoading(true);
+    setError('');
+    try {
+      const res = await apiRequest.post('/api/auth/login', { email, password });
+      updateUser(res.data.token);
       navigate('/');
+    } catch (err) {
+      setError(err?.response?.data?.message || 'Failed to login!');
+    } finally {
+      setIsLoading(false);
     }
   };
-  
+
   return (
     <div className="min-h-screen flex items-center justify-center mt-12">
       <div className="bg-white p-8 rounded-2xl shadow-lg w-full max-w-md">
         <h2 className="text-2xl font-bold text-center mb-6">Log into your account</h2>
 
-        <form className="space-y-4">
+        <form className="space-y-4" onSubmit={handleSubmit}>
           <input
             type="email"
+            name="email"
             placeholder="Email Address (required)"
             required
             className="w-full p-3 border rounded-md"
+            value={email}
+            onChange={e => setEmail(e.target.value)}
           />
           <input
             type="password"
+            name="password"
             placeholder="Password (Required, 8+ characters)"
             required
             minLength={8}
             className="w-full p-3 border rounded-md"
+            value={password}
+            onChange={e => setPassword(e.target.value)}
           />
 
           <div className="text-right text-sm">
@@ -56,9 +72,11 @@ const LoginPage = () => {
           <button
             type="submit"
             className="w-full bg-[#1E2347] text-white py-3 rounded-full shadow-md hover:opacity-90 transition"
+            disabled={isLoading}
           >
-            Continue
+            {isLoading ? 'Loading...' : 'Continue'}
           </button>
+          {error && <div className="text-red-500 text-sm text-center">{error}</div>}
         </form>
 
         <div className="my-6 flex items-center justify-center">
