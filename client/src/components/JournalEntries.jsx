@@ -60,13 +60,13 @@ function JournalEntries({ entries, onDeleteEntry, onEditEntry }) {
 
   const getColorByMood = (mood) => {
     const moodColors = {
-      happy: "bg-gradient-to-b from-[#FFFAA7] to-[#FFF100]",
-      sad: "bg-gradient-to-br from-[#00A2E5] to-[#FFD4FE]",
-      angry: "bg-gradient-to-br from-[#FF5353] to-[#FFB9B9]",
-      fear: "bg-gradient-to-br from-[#00A2E5] to-[#FFFFFF]",
-      surprise: "bg-gradient-to-br from-[#E484FF] to-[#FCDAFF]",
-      disgust: "bg-gradient-to-br from-[#AEAEAE] to-[#E9E1E1]",
-      neutral: "bg-gradient-to-br from-[#4ADE80] to-[#BBF7D0]",
+      happy: "bg-gradient-to-b from-[#FFF100] to-[#FFFCD0] text-[#3B3B00]",
+      sad: "bg-gradient-to-br from-[#00A2E5] to-[#FFFFFF] text-[#003B5B]",
+      angry: "bg-gradient-to-br from-[#FF5353] to-[#FFF8F8] text-[#5B0000]",
+      fear: "bg-gradient-to-br from-[#1E90FF] to-[#5600A1] text-white",
+      surprise: "bg-gradient-to-br from-[#D466F2] to-[#FFFFFF] text-[#520A66]",
+      disgust: "bg-gradient-to-br from-[#FBFFF3] to-[#6B8E23] text-[#556B2F]",
+      neutral: "bg-gradient-to-br from-[#AEAEAE] to-[#E9E1E1] text-[#1A1A1A]",
     };
     return moodColors[mood] || "bg-gradient-to-br from-[#4ADE80] to-[#BBF7D0]";
   };
@@ -177,7 +177,9 @@ function JournalEntries({ entries, onDeleteEntry, onEditEntry }) {
         >
           {/* Header Section */}
           <div className="flex justify-between items-center mb-6">
-            <h3 className="font-medium text-lg capitalize">{entry.title}</h3>
+            <h3 className="font-semibold text-lg lg:text-xl xl:text-2xl capitalize">
+              {entry.title}
+            </h3>
             <div className="relative">
               <button
                 onClick={() => toggleDropdown(entry.id)}
@@ -237,16 +239,19 @@ function JournalEntries({ entries, onDeleteEntry, onEditEntry }) {
             <div className="flex flex-col flex-grow overflow-hidden">
               <div className="overflow-y-auto pr-2 flex-grow">
                 <p
-                  className={`text-sm ${
-                    expandedEntries[entry.id] ? "" : "line-clamp-7"
-                  } text-justify px-1`}
+                  className={`font-semibold ${
+                    expandedEntries[entry.id] ? "text-sm" : "line-clamp-7 text-base"
+                  } ${
+                    entry.jurnal && entry.jurnal.length < 215
+                      ? "text-center"
+                      : "text-justify"
+                  } px-1`}
                 >
                   {entry.jurnal || "No journal entry yet..."}
                 </p>
               </div>
             </div>
 
-            {/* Date and Show More Button - Always at bottom */}
             <div className="flex justify-between items-center text-sm font-medium mt-auto pt-2">
               <span>{entry.date || "No date"}</span>
               {entry.jurnal && entry.jurnal.length > 215 && (
