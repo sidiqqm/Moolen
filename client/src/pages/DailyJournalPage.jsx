@@ -1,11 +1,22 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Calendar from "../components/Calendar";
 import JournalEntries from "../components/JournalEntries";
 import MarqueeText from "../components/MarqueeText";
 import Footer from "../components/Footer";
 
+import AOS from "aos";
+import "aos/dist/aos.css";
+
 function DailyJournalPage() {
+useEffect(() => {
+  AOS.init({
+    duration: 1000,
+    once: false,
+    mirror: true,
+  });
+}, []);
+
   const [showForm, setShowForm] = useState(false);
   const [formData, setFormData] = useState({
     title: "",
@@ -87,7 +98,18 @@ function DailyJournalPage() {
       {/* Hero Section */}
       <section className="container mx-auto px-4 py-16 text-center">
         <h1 className="text-5xl font-bold mb-12 relative">
-          <span className="relative z-10">Find Peace in Every Page</span>
+          <span className="relative z-10 inline-flex flex-wrap justify-center">
+            {"Find Peace in Every Page".split(" ").map((word, index) => (
+              <span
+                key={index}
+                data-aos="fade-up"
+                data-aos-delay={index * 200}
+                className="inline-block"
+              >
+                {word}&nbsp;
+              </span>
+            ))}
+          </span>
           <div className="absolute -left-8 top-1/2 transform -translate-y-1/2 z-0">
             <div className="w-16 h-16 rounded-full border-4 border-sky-200 opacity-70"></div>
           </div>
@@ -95,9 +117,10 @@ function DailyJournalPage() {
             <div className="w-20 h-8 rounded-full border-2 border-pink-200 opacity-70"></div>
           </div>
         </h1>
+
         <button
           onClick={() => setShowForm(true)}
-          className="bg-indigo-900 text-white font-medium py-3 px-8 rounded-full hover:bg-indigo-800 transition-colors"
+          className="bg-indigo-900 text-white font-medium py-3 px-8 rounded-full hover:bg-indigo-800 transition-colors transition-transform duration-300 hover:scale-105"
         >
           Pen Down Your Day
         </button>
@@ -138,7 +161,7 @@ function DailyJournalPage() {
                 >
                   <option value="">Select your mood</option>
                   <option value="happy">😊 Happy</option>
-                  <option value="disgust">🤩 Disgust</option>
+                  <option value="disgust">🤢 Disgust</option>
                   <option value="neutral">😌 Neutral</option>
                   <option value="sad">😢 Sad</option>
                   <option value="angry">😠 Angry</option>
@@ -203,7 +226,7 @@ function DailyJournalPage() {
       {/* Diary Section */}
       <section className="container mx-auto px-4 pt-24">
         <div className="text-center mb-8 relative">
-          <span className="relative inline-block min-w-[16rem] min-h-[4rem] font-bold font-nunito text-4xl">
+          <span className="relative inline-block min-w-[16rem] min-h-[4rem] font-bold font-nunito text-4xl" data-aos="fade-up">
             Your Diary
             <img
               src="/circle.png"
@@ -272,12 +295,12 @@ function DailyJournalPage() {
         </div>
       </section>
 
-      {/* Pelangi bergelombang */}
-      <div className="relative w-full overflow-hidden mt-16">
+      {/* Pelangi bergelombang fullscreen */}
+      <div className="relative w-full h-screen overflow-hidden mt-0">
         <img
           src="/pelangi.png"
           alt="Pelangi"
-          className="relative z-10 mx-auto w-[840px] -mb-20"
+          className="absolute top-24 left-0 w-full h-full object-cover z-10" data-aos="fade-up"
         />
       </div>
 
