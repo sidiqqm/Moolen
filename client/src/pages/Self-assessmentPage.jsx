@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
+import AOS from "aos";
+import "aos/dist/aos.css";
 
 // Landing Page SelfAssessment
 export const SelfAssessment = () => {
@@ -7,26 +9,47 @@ export const SelfAssessment = () => {
     <section className="bg-gradient-to-b from-sky-200 to-white min-h-screen flex flex-col items-center justify-center px-4 py-10">
       <div className="bg-[#1A2442] rounded-3xl p-20 h-[500px] md:h-[700px] max-w-[1850px] w-full flex flex-col md:flex-row justify-between items-center shadow-lg">
         <div className="relative text-white max-w-xl">
-        <img
+          <img
             src="/y.png"
             alt="abstract decoration"
             className="absolute -top-20 -left-10 z-0 w-72 opacity-40"
-        />
-        <h1 className="relative z-10 text-6xl md:text-7xl font-extrabold mb-4 leading-tight">
+          />
+
+          <h1 className="relative z-10 text-6xl md:text-7xl font-extrabold mb-4 leading-tight">
             Stop guessing. <br />
-            <span className="text-blue-300">Start assessing.</span>
-        </h1>
-        <p className="italic text-gray-300 mb-10 relative z-10">
-            "Knowing yourself is the beginning of all wisdom." – Aristotle
-        </p>
-        <Link to="/self-assessment/start">
-            <button className="relative z-10 bg-sky-300 hover:bg-sky-400 text-black px-10 py-3 mt-10 rounded-full font-semibold shadow-md transition">
-            Start Reflection
+            <span className="text-blue-300 wave">
+              {"Start assessing.".split("").map((char, i) => (
+                <span
+                  key={i}
+                  style={{
+                    display: "inline-block",
+                    minWidth: char === " " ? "0.5rem" : "auto",
+                  }}
+                >
+                  {char}
+                </span>
+              ))}
+            </span>
+          </h1>
+
+          <p className="italic text-gray-300 mb-10 relative z-10 fade-word">
+            {"\"Knowing yourself is the beginning of all wisdom.\" – Aristotle"
+              .split(" ")
+              .map((word, i) => (
+                <span key={i} className="mr-1">
+                  {word}
+                </span>
+              ))}
+          </p>
+
+          <Link to="/self-assessment/start">
+            <button className="relative z-10 bg-sky-300 hover:bg-sky-400 text-black px-10 py-3 mt-10 rounded-full font-semibold shadow-md transition transition-transform duration-300 hover:scale-105">
+              Start Reflection
             </button>
-        </Link>
+          </Link>
         </div>
 
-        <div className="mt-10 md:mt-0 md:ml-10">
+        <div className="mt-10 md:mt-0 md:ml-10" data-aos="fade-up">
           <img
             src="/sa1.png"
             alt="Meditation Illustration"

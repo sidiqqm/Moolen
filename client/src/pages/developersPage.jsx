@@ -107,7 +107,7 @@ export default function DeveloperView() {
   }, []);
 
   return (
-    <div className="max-w-7xl mx-auto p-6 pt-45">
+    <div className="max-w-7xl mx-auto p-6 pt-35">
       <h1 className="text-3xl font-bold mb-8 text-center">Our Developers</h1>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
         {developers.map((dev) => (
