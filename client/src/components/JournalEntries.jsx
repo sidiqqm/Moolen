@@ -1,85 +1,194 @@
 import { useState } from "react";
 
-const entries = [
-  {
-    id: 1,
-    title: "Malam Mingguan",
-    content:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur vel fermentum elit. Quisque vitae blandit libero. Nullam id sapien nec ligula mattis pretium ullamcorper. Justo nisi egestas risus vel commodo nisi tellus vitae magna. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur vel fermentum elit. Quisque vitae blandit libero. Nullam id sapien nec ligula mattis pretium ullamcorper. Justo nisi egestas risus vel commodo nisi tellus vitae magna.",
-    time: "13:30",
-    color: "bg-yellow-200",
-  },
-  {
-    id: 2,
-    title: "Malam Mingguan",
-    content:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur vel fermentum elit. Quisque vitae blandit libero. Nullam id sapien nec ligula mattis pretium ullamcorper. Justo nisi egestas risus vel commodo nisi tellus vitae magna. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur vel fermentum elit. Quisque vitae blandit libero. Nullam id sapien nec ligula mattis pretium ullamcorper. Justo nisi egestas risus vel commodo nisi tellus vitae magna.",
-    time: "14:30",
-    color: "bg-red-300",
-  },
-  {
-    id: 3,
-    title: "Malam Mingguan",
-    content:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur vel fermentum elit. Quisque vitae blandit libero. Nullam id sapien nec ligula mattis pretium ullamcorper. Justo nisi egestas risus vel commodo nisi tellus vitae magna. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur vel fermentum elit. Quisque vitae blandit libero. Nullam id sapien nec ligula mattis pretium ullamcorper. Justo nisi egestas risus vel commodo nisi tellus vitae magna.",
-    time: "15:30",
-    color: "bg-sky-200",
-  },
-  {
-    id: 4,
-    title: "Malam Mingguan",
-    content:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur vel fermentum elit. Quisque vitae blandit libero. Nullam id sapien nec ligula mattis pretium ullamcorper. Justo nisi egestas risus vel commodo nisi tellus vitae magna. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur vel fermentum elit. Quisque vitae blandit libero. Nullam id sapien nec ligula mattis pretium ullamcorper. Justo nisi egestas risus vel commodo nisi tellus vitae magna.",
-    time: "16:30",
-    color: "bg-green-300",
-  },
-  {
-    id: 5,
-    title: "Malam Mingguan",
-    content:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur vel fermentum elit. Quisque vitae blandit libero. Nullam id sapien nec ligula mattis pretium ullamcorper. Justo nisi egestas risus vel commodo nisi tellus vitae magna. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur vel fermentum elit. Quisque vitae blandit libero. Nullam id sapien nec ligula mattis pretium ullamcorper. Justo nisi egestas risus vel commodo nisi tellus vitae magna.",
-    time: "17:30",
-    color: "bg-purple-300",
-  },
-  {
-    id: 6,
-    title: "Malam Mingguan",
-    content:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur vel fermentum elit. Quisque vitae blandit libero. Nullam id sapien nec ligula mattis pretium ullamcorper. Justo nisi egestas risus vel commodo nisi tellus vitae magna. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur vel fermentum elit. Quisque vitae blandit libero. Nullam id sapien nec ligula mattis pretium ullamcorper. Justo nisi egestas risus vel commodo nisi tellus vitae magna.",
-    time: "18:30",
-    color: "bg-orange-300",
-  },
-];
-
-function JournalEntries() {
+function JournalEntries({ entries, onDeleteEntry, onEditEntry }) {
   const [activeDropdown, setActiveDropdown] = useState(null);
+  const [editingEntry, setEditingEntry] = useState(null);
+  const [editFormData, setEditFormData] = useState({
+    title: "",
+    mood: "",
+    jurnal: "",
+  });
+  const [expandedEntries, setExpandedEntries] = useState({});
 
   const toggleDropdown = (id) => {
-    if (activeDropdown === id) {
-      setActiveDropdown(null);
-    } else {
-      setActiveDropdown(id);
-    }
+    setActiveDropdown(activeDropdown === id ? null : id);
   };
 
+  const handleDelete = (id) => {
+    onDeleteEntry(id);
+    setActiveDropdown(null);
+  };
+
+  const handleEdit = (entry) => {
+    setEditingEntry(entry);
+    setEditFormData({
+      title: entry.title,
+      mood: entry.mood,
+      jurnal: entry.jurnal,
+    });
+    setActiveDropdown(null);
+  };
+
+  const handleEditInputChange = (e) => {
+    const { name, value } = e.target;
+    setEditFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const handleEditSubmit = (e) => {
+    e.preventDefault();
+    const updatedEntry = {
+      ...editingEntry,
+      title: editFormData.title,
+      mood: editFormData.mood,
+      jurnal: editFormData.jurnal,
+      emote: `/${editFormData.mood}.png`,
+      color: getColorByMood(editFormData.mood),
+    };
+    onEditEntry(updatedEntry);
+    setEditingEntry(null);
+  };
+
+  const toggleExpandEntry = (id) => {
+    setExpandedEntries((prev) => ({
+      ...prev,
+      [id]: !prev[id],
+    }));
+  };
+
+  const getColorByMood = (mood) => {
+    const moodColors = {
+      happy: "bg-gradient-to-b from-[#FFF100] to-[#FFFCD0] text-[#3B3B00]",
+      sad: "bg-gradient-to-br from-[#00A2E5] to-[#FFFFFF] text-[#003B5B]",
+      angry: "bg-gradient-to-br from-[#FF5353] to-[#FFF8F8] text-[#5B0000]",
+      fear: "bg-gradient-to-br from-[#1E90FF] to-[#5600A1] text-white",
+      surprise: "bg-gradient-to-br from-[#D466F2] to-[#FFFFFF] text-[#520A66]",
+      disgust: "bg-gradient-to-br from-[#FBFFF3] to-[#6B8E23] text-[#556B2F]",
+      neutral: "bg-gradient-to-br from-[#AEAEAE] to-[#E9E1E1] text-[#1A1A1A]",
+    };
+    return moodColors[mood] || "bg-gradient-to-br from-[#4ADE80] to-[#BBF7D0]";
+  };
+
+  if (entries.length === 0) {
+    return (
+      <div className="text-center py-10">
+        <div className="inline-block p-6 bg-white rounded-lg shadow-md">
+          <p className="text-gray-600">
+            Anda tidak ada membuat jurnal hari ini
+          </p>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
+      {/* Edit Modal */}
+      {editingEntry && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-lg p-6 w-full max-w-md">
+            <h2 className="text-2xl font-bold mb-4">Edit Journal Entry</h2>
+            <form onSubmit={handleEditSubmit}>
+              <div className="mb-4">
+                <label
+                  className="block text-gray-700 mb-2"
+                  htmlFor="edit-title"
+                >
+                  Title
+                </label>
+                <input
+                  type="text"
+                  id="edit-title"
+                  name="title"
+                  value={editFormData.title}
+                  onChange={handleEditInputChange}
+                  className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  required
+                />
+              </div>
+
+              <div className="mb-4">
+                <label className="block text-gray-700 mb-2" htmlFor="edit-mood">
+                  Mood
+                </label>
+                <select
+                  id="edit-mood"
+                  name="mood"
+                  value={editFormData.mood}
+                  onChange={handleEditInputChange}
+                  className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  required
+                >
+                  <option value="">Select your mood</option>
+                  <option value="happy">😊 Happy</option>
+                  <option value="sad">😢 Sad</option>
+                  <option value="angry">😠 Angry</option>
+                  <option value="fear">😨 Fear</option>
+                  <option value="surprise">😲 Surprise</option>
+                  <option value="disgust">🤢 Disgust</option>
+                  <option value="neutral">😐 Neutral</option>
+                </select>
+              </div>
+
+              <div className="mb-6">
+                <label
+                  className="block text-gray-700 mb-2"
+                  htmlFor="edit-jurnal"
+                >
+                  Your Journal
+                </label>
+                <textarea
+                  id="edit-jurnal"
+                  name="jurnal"
+                  value={editFormData.jurnal}
+                  onChange={handleEditInputChange}
+                  className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 min-h-[150px]"
+                  required
+                />
+              </div>
+
+              <div className="flex justify-end space-x-3">
+                <button
+                  type="button"
+                  onClick={() => setEditingEntry(null)}
+                  className="px-4 py-2 text-gray-600 rounded-lg hover:bg-gray-100"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="px-4 py-2 bg-indigo-900 text-white rounded-lg hover:bg-indigo-800"
+                >
+                  Save Changes
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* Journal Entries */}
       {entries.map((entry) => (
         <div
           key={entry.id}
-          className={`${entry.color} p-4 rounded-lg shadow-sm relative`}
+          className={`${entry.color} p-6 rounded-lg shadow-2xl relative flex flex-col h-full lg:h-[505px] max-h-[505px] border border-gray-500 hover:shadow-lg transition-shadow duration-300 overflow-hidden`}
         >
-          <div className="flex justify-between items-start mb-2">
-            <h3 className="font-medium">{entry.title}</h3>
+          {/* Header Section */}
+          <div className="flex justify-between items-center mb-6">
+            <h3 className="font-semibold text-lg lg:text-xl xl:text-2xl capitalize">
+              {entry.title}
+            </h3>
             <div className="relative">
               <button
                 onClick={() => toggleDropdown(entry.id)}
-                className="p-1 hover:bg-black/10 rounded-full"
+                className="p-2 hover:bg-black/10 rounded-full"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  width="16"
-                  height="16"
+                  width="18"
+                  height="18"
                   viewBox="0 0 24 24"
                   fill="none"
                   stroke="currentColor"
@@ -93,15 +202,18 @@ function JournalEntries() {
                 </svg>
               </button>
               {activeDropdown === entry.id && (
-                <div className="absolute right-0 mt-1 w-36 bg-white rounded-md shadow-lg z-10">
+                <div className="absolute right-0 mt-2 w-40 bg-white rounded-md shadow-lg z-10">
                   <div className="py-1">
-                    <button className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                    <button
+                      onClick={() => handleEdit(entry)}
+                      className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                    >
                       Edit
                     </button>
-                    <button className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                      Share
-                    </button>
-                    <button className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                    <button
+                      onClick={() => handleDelete(entry.id)}
+                      className="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100"
+                    >
                       Delete
                     </button>
                   </div>
@@ -109,8 +221,49 @@ function JournalEntries() {
               )}
             </div>
           </div>
-          <p className="text-sm line-clamp-6">{entry.content}</p>
-          <div className="text-xs text-right mt-4">{entry.time}</div>
+
+          {/* Journal Section */}
+          <div className="flex flex-col flex-grow overflow-hidden gap-4">
+            {/* Image Container */}
+            <div className="flex justify-center items-center min-h-[180px]">
+              {entry.emote && (
+                <img
+                  src={entry.emote}
+                  alt="Emote"
+                  className="max-w-full max-h-[160px]"
+                />
+              )}
+            </div>
+
+            {/* Text Journal */}
+            <div className="flex flex-col flex-grow overflow-hidden">
+              <div className="overflow-y-auto pr-2 flex-grow">
+                <p
+                  className={`font-semibold ${
+                    expandedEntries[entry.id] ? "text-sm" : "line-clamp-7 text-base"
+                  } ${
+                    entry.jurnal && entry.jurnal.length < 215
+                      ? "text-center"
+                      : "text-justify"
+                  } px-1`}
+                >
+                  {entry.jurnal || "No journal entry yet..."}
+                </p>
+              </div>
+            </div>
+
+            <div className="flex justify-between items-center text-sm font-medium mt-auto pt-2">
+              <span>{entry.date || "No date"}</span>
+              {entry.jurnal && entry.jurnal.length > 215 && (
+                <button
+                  onClick={() => toggleExpandEntry(entry.id)}
+                  className="text-indigo-600 hover:text-indigo-800 text-xs"
+                >
+                  {expandedEntries[entry.id] ? "Show Less" : "Show More"}
+                </button>
+              )}
+            </div>
+          </div>
         </div>
       ))}
     </div>
