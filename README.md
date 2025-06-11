@@ -1,4 +1,4 @@
-# Moolen
+# MooLen
 Moolen adalah aplikasi berbasis wab yang mendeteksi suasana hati pengguna melalui analisis ekspresi wajah.
 
 ## Fitur Fitur
