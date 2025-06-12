@@ -26,3 +26,9 @@ o	Tanggal/waktu
 11.	Jawab setiap pertanyaan dengan memilih "Yes" atau "No".
 12.	Sistem akan memberikan hasil apakah terdapat indikasi disorder tertentu berdasarkan jawaban yang diberikan.
 
+## Documentation App
+![Screenshot (2319)](https://github.com/user-attachments/assets/ef47477d-f168-4d97-a0df-a0c63c0d5b61)
+![Screenshot (2317)](https://github.com/user-attachments/assets/a20e3001-ce0f-468c-8721-c543aa0e3792)
+![Screenshot 2025-06-12 213425](https://github.com/user-attachments/assets/3e345bdc-2cdf-49a4-ac89-bceb8bda9010)
+
+
