@@ -1,3 +1,6 @@
+![logo 1](https://github.com/user-attachments/assets/7e0c90af-3220-4cf6-870a-10f0fcf960f9)
+
+
 # MooLen
 Moolen adalah aplikasi berbasis wab yang mendeteksi suasana hati pengguna melalui analisis ekspresi wajah.
 
@@ -28,10 +31,15 @@ o	Tanggal/waktu
 
 ## Documentation App
 ![Screenshot (2319)](https://github.com/user-attachments/assets/ef47477d-f168-4d97-a0df-a0c63c0d5b61)
+
 ![Screenshot (2317)](https://github.com/user-attachments/assets/a20e3001-ce0f-468c-8721-c543aa0e3792)
+
 ![Screenshot 2025-06-12 214951](https://github.com/user-attachments/assets/ac334195-ff65-4ddc-9b19-de6a4c0c0e2a)
+
 ![Screenshot 2025-06-12 213300](https://github.com/user-attachments/assets/5238bffc-5f29-4df9-a3f7-838a308aec43)
+
 ![Screenshot 2025-06-12 213139](https://github.com/user-attachments/assets/a1b7c262-384d-485c-9145-0ceb31f369e4)
+
 ![Screenshot 2025-06-12 213425](https://github.com/user-attachments/assets/3e345bdc-2cdf-49a4-ac89-bceb8bda9010)
 
 
