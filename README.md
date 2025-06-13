@@ -15,9 +15,9 @@ Cara untuk menggunakan :
 2.	Lakukan login jika sudah memiliki akun. Jika belum, registrasikan akun terlebih dahulu.
 3.	Klik tombol "Mood Check-In" untuk memulai pengecekan mood. Hasil akan ditampilkan setelah proses selesai.
 4.	Untuk menulis jurnal, klik "Write Down Your Journal" yang akan mengarahkan ke halaman Daily Journal atau menekan tombol "Mood Check-In" pada halaman utama.
-5.	Di halaman journal akan muncul card yang menyesuaikan dengan hasil mood check-in sebelumnya.
-6.	Pada card journal ada fitur delete dan edit, isikan inputan berikut untuk proses edit:
-o	Nama kegiatan
+5.	Di halaman daily mood akan muncul card yang menyesuaikan dengan hasil mood check-in sebelumnya.
+6.	Pada halam daily journal ada fitur CRUD, isikan inputan berikut untuk proses edit:
+o	Title
 o	Mood
 o	Catatan jurnal
 o	Tanggal/waktu
@@ -27,6 +27,29 @@ o	Tanggal/waktu
 10.	Atur tanggal terlebih dahulu sebelum memulai assessment.
 11.	Jawab setiap pertanyaan dengan memilih "Yes" atau "No".
 12.	Sistem akan memberikan hasil apakah terdapat indikasi disorder tertentu berdasarkan jawaban yang diberikan.
+
+## Tools 
+### 🔧 Frontend
+- *Vite*  
+- *React.js*  
+- *Tailwind CSS*  
+  Utility-first CSS framework yang memungkinkan styling antarmuka secara efisien dan responsif.
+
+### 🖥 Backend
+- *Node.js*  
+- *Express.js*  
+- *MySQL*  
+- *Google Cloud Auth (OAuth 2.0)*  
+
+### 🧠 Integrasi Machine Learning
+- *REST API*  
+
+### 🗄 Manajemen Database & Server
+- *phpMyAdmin* 
+- *File Browser VPS*  
+
+### ☁ Deployment
+- *VPS (Hostinger)*  
 
 ## Documentation App
 ![Screenshot (2319)](https://github.com/user-attachments/assets/ef47477d-f168-4d97-a0df-a0c63c0d5b61)
