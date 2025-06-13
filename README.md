@@ -17,10 +17,10 @@ Cara untuk menggunakan :
 4.	Untuk menulis jurnal, klik "Write Down Your Journal" yang akan mengarahkan ke halaman Daily Journal atau menekan tombol "Mood Check-In" pada halaman utama.
 5.	Di halaman daily mood akan muncul card yang menyesuaikan dengan hasil mood check-in sebelumnya.
 6.	Pada halam daily journal ada fitur CRUD, isikan inputan berikut untuk proses edit:
-o	Title
-o	Mood
-o	Catatan jurnal
-o	Tanggal/waktu
+    -	Title
+    -	Mood
+    -	Catatan jurnal
+    -	Tanggal/waktu
 7.	Jurnal akan tersimpan dan ditampilkan sesuai waktu yang diinputkan. Card journal bisa diedit atau dihapus.
 8.	Jika ingin melihat tips harian, klik "Daily Tips" di navbar atau homepage.
 9.	Untuk self-assessment, klik tombol "Self Assessment" di homepage lalu pilih "Start".
