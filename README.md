@@ -21,7 +21,7 @@ Cara untuk menggunakan :
     -	Mood
     -	Catatan jurnal
     -	Tanggal/waktu
-7.	Jurnal akan tersimpan dan ditampilkan sesuai waktu yang diinputkan. Card journal bisa diedit atau dihapus.
+7.	Jurnal akan tersimpan dan ditampilkan sesuai waktu yang diinput. Card journal bisa diedit atau dihapus.
 8.	Jika ingin melihat tips harian, klik "Daily Tips" di navbar atau homepage.
 9.	Untuk self-assessment, klik tombol "Self Assessment" di homepage lalu pilih "Start".
 10.	Atur tanggal terlebih dahulu sebelum memulai assessment.
